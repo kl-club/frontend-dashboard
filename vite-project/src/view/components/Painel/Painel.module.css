@@ -1,0 +1,46 @@
+.painel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--radius);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 18px 20px 12px;
+}
+
+.titulo {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.extra {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.corpo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--borda);
+  color: var(--texto-suave);
+  font-size: 13px;
+}

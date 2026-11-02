@@ -1,0 +1,59 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.neutro {
+  background: var(--cinza-100);
+  color: var(--cinza-700);
+}
+
+.verde {
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+
+.pontos {
+  background: var(--pontos-bg);
+  color: #b4530a;
+}
+
+.laranja {
+  background: var(--pontos-bg);
+  color: #b4530a;
+}
+
+.cancelado {
+  background: var(--danger-claro);
+  color: var(--danger-escuro);
+}
+
+.apagado {
+  background: var(--cinza-100);
+  color: var(--cinza-500);
+}
+
+.ao-vivo {
+  background: var(--verde-100);
+  color: var(--verde-700);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.ao-vivo::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--verde-500);
+  animation: pulsar 1.6s ease-in-out infinite;
+}

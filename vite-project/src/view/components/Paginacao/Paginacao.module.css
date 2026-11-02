@@ -1,0 +1,75 @@
+.paginacao {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.numeros {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.botao,
+.numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  color: var(--texto);
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.botao {
+  padding: 0 12px;
+}
+
+.numero {
+  min-width: 34px;
+  padding: 0 8px;
+}
+
+.botao:not(:disabled):hover,
+.numero:not(:disabled):not(.atual):hover {
+  background: var(--cinza-50);
+}
+
+.botao:disabled {
+  color: var(--cinza-400);
+}
+
+.atual {
+  background: var(--verde-600);
+  border-color: var(--verde-600);
+  color: var(--branco);
+}
+
+.reticencias {
+  min-width: 20px;
+  text-align: center;
+  color: var(--texto-fraco);
+}
+
+@media (max-width: 479px) {
+  .texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .botao {
+    padding: 0 8px;
+  }
+}
