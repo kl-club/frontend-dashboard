@@ -1,0 +1,70 @@
+.botao {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.largo {
+  width: 100%;
+}
+
+.primario {
+  background: var(--verde-600);
+  color: var(--branco);
+}
+
+.primario:not(:disabled):hover {
+  background: var(--verde-700);
+}
+
+.secundario {
+  background: var(--superficie);
+  border-color: var(--borda);
+  color: var(--texto);
+}
+
+.secundario:not(:disabled):hover {
+  background: var(--cinza-50);
+}
+
+.perigo {
+  background: var(--superficie);
+  border-color: #efc2c2;
+  color: var(--danger);
+}
+
+.perigo:not(:disabled):hover {
+  background: var(--danger-claro);
+}
+
+.perigoCheio {
+  background: var(--danger);
+  color: var(--branco);
+}
+
+.perigoCheio:not(:disabled):hover {
+  background: var(--danger-escuro);
+}
+
+.botao:disabled {
+  opacity: 0.6;
+}
+
+.indicador {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: girar 0.8s linear infinite;
+}

@@ -1,0 +1,35 @@
+.dialogo {
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--superficie);
+  color: var(--texto);
+  box-shadow: var(--sombra-alta);
+}
+
+.dialogo::backdrop {
+  background: rgba(10, 30, 22, 0.45);
+}
+
+.caixa {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+}
+
+.titulo {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.mensagem {
+  color: var(--texto-suave);
+}
+
+.botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
