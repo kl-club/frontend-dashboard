@@ -89,7 +89,7 @@ export default function PedidosHojeTab() {
   return (
     <section className={styles.conteudoAba} aria-label="Pedidos de hoje">
       <div className={styles.barraFerramentas}>
-        <Chip tom="ao-vivo" title={ocupado ? 'Atualização automática pausada durante a ação' : 'Atualização automática'}>
+        <Chip tom="auto" title={ocupado ? 'Atualização automática pausada durante a ação' : 'Atualização automática'}>
           Auto: {vm.intervaloSegundos}s
         </Chip>
         <BotaoAtualizar onClick={vm.atualizar} carregando={vm.atualizando} desabilitado={ocupado} />

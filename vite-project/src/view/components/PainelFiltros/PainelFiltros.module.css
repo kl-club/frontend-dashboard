@@ -1,0 +1,70 @@
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.campo span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.campo input,
+.campo select {
+  height: 38px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  min-width: 0;
+}
+
+.campo input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.erro {
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.botoes > button {
+  flex: 0 0 auto;
+  min-width: 110px;
+}
+
+@media (max-width: 767px) {
+  .campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .botoes > button {
+    flex: 1;
+  }
+}

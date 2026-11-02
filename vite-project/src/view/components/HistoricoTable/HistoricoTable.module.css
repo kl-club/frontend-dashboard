@@ -1,0 +1,254 @@
+.painel {
+  min-width: 0;
+  border-radius: var(--radius);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.rolagem {
+  overflow-x: auto;
+  transition: opacity 0.15s;
+}
+
+.recarregando {
+  opacity: 0.6;
+}
+
+.tabela {
+  width: 100%;
+  min-width: 940px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tabela th {
+  padding: 12px 16px;
+  background: var(--cinza-50);
+  border-bottom: 1px solid var(--borda);
+  color: var(--texto-fraco);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabela th:nth-child(1) {
+  width: 92px;
+}
+.tabela th:nth-child(2) {
+  width: 20%;
+}
+.tabela th:nth-child(3) {
+  width: 200px;
+}
+.tabela th:nth-child(5) {
+  width: 200px;
+}
+.tabela th:nth-child(6) {
+  width: 150px;
+}
+
+.ordenar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.ordenar:hover {
+  color: var(--texto);
+}
+
+th[aria-sort='ascending'] .ordenar,
+th[aria-sort='descending'] .ordenar {
+  color: var(--verde-700);
+}
+
+.tabela td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--borda);
+  vertical-align: middle;
+}
+
+.linha:last-child td {
+  border-bottom: 0;
+}
+
+.codigo {
+  font-weight: 800;
+  color: var(--verde-600);
+}
+
+.cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cliente strong,
+.cliente span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.telefone {
+  color: var(--texto-fraco);
+  font-size: 13px;
+}
+
+.mesa {
+  color: #c25e0c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.motivo {
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.valor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cancelado td {
+  background: var(--cancelado-bg);
+}
+
+.cancelado .valor s {
+  color: var(--texto-fraco);
+}
+
+.itens {
+  color: var(--texto-suave);
+}
+
+.reticencias {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.data {
+  white-space: nowrap;
+  color: var(--texto-suave);
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--borda);
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+/* < 768 px: cada linha vira um cartão */
+@media (max-width: 767px) {
+  .tabela {
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .tabela thead tr {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .tabela thead th {
+    display: none;
+    width: auto !important;
+    border: 0;
+    background: transparent;
+  }
+
+  /* O único cabeçalho que fica é o de ordenação por valor. */
+  .tabela thead th[aria-sort] {
+    display: block;
+    padding: 10px 16px;
+  }
+
+  .tabela,
+  .tabela tbody,
+  .linha,
+  .tabela td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabela thead {
+    display: block;
+    border-bottom: 1px solid var(--borda);
+  }
+
+  .linha {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--borda);
+  }
+
+  .linha:last-child {
+    border-bottom: 0;
+  }
+
+  .tabela td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 0;
+    border: 0;
+    text-align: right;
+    min-width: 0;
+  }
+
+  .tabela td::before {
+    content: attr(data-rotulo);
+    flex: none;
+    color: var(--texto-fraco);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: left;
+  }
+
+  .cancelado {
+    background: var(--cancelado-bg);
+  }
+
+  .cancelado td {
+    background: transparent;
+  }
+
+  .cliente {
+    align-items: flex-end;
+  }
+
+  .valor {
+    justify-content: flex-end;
+  }
+}

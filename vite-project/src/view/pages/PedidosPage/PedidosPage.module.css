@@ -108,3 +108,58 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+
+.grupoBotoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botaoFerramenta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.botaoFerramenta:not(:disabled):hover {
+  background: var(--cinza-50);
+}
+
+.botaoFerramenta:disabled {
+  color: var(--cinza-400);
+}
+
+.botaoAtivo {
+  border-color: var(--verde-500);
+  color: var(--verde-700);
+  background: var(--verde-50);
+}
+
+.contadorFiltros {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--verde-600);
+  color: var(--branco);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .grupoBotoes {
+    width: 100%;
+  }
+
+  .grupoBotoes .botaoFerramenta {
+    flex: 1;
+    justify-content: center;
+  }
+}
