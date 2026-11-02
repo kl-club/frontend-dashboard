@@ -369,47 +369,6 @@
       "motivoCancelamento": null
     },
     {
-      "id": 1012,
-      "status": "CONCLUIDO",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 10459,
-      "cliente": {
-        "id": 111,
-        "nome": "Larissa Mendes",
-        "telefone": "11954321098"
-      },
-      "itens": [
-        {
-          "produtoId": 2,
-          "nome": "Suco Laranja Pêra",
-          "quantidade": 1,
-          "valorTotal": 14
-        },
-        {
-          "produtoId": 12,
-          "nome": "Salada Caesar Light",
-          "quantidade": 1,
-          "valorTotal": 32
-        },
-        {
-          "produtoId": 1,
-          "nome": "Suco Verde Especial",
-          "quantidade": 1,
-          "valorTotal": 14
-        }
-      ],
-      "observacao": null,
-      "formaPagamento": "PIX",
-      "valorTotal": 60,
-      "pontosGanhos": 60,
-      "origem": {
-        "tipo": "TOTEM",
-        "identificacao": "Kiosk 02"
-      },
-      "motivoCancelamento": null
-    },
-    {
       "id": 1013,
       "status": "CONCLUIDO",
       "modalidade": "RETIRADA",
@@ -815,47 +774,6 @@
       "motivoCancelamento": null
     },
     {
-      "id": 1025,
-      "status": "CONCLUIDO",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 1975,
-      "cliente": {
-        "id": 106,
-        "nome": "Felipe Andrade",
-        "telefone": "11991234567"
-      },
-      "itens": [
-        {
-          "produtoId": 3,
-          "nome": "Combo Fit Treino",
-          "quantidade": 1,
-          "valorTotal": 28
-        },
-        {
-          "produtoId": 4,
-          "nome": "Wrap Proteico Frango Orgânico",
-          "quantidade": 1,
-          "valorTotal": 34
-        },
-        {
-          "produtoId": 1,
-          "nome": "Suco Verde Especial",
-          "quantidade": 2,
-          "valorTotal": 28
-        }
-      ],
-      "observacao": null,
-      "formaPagamento": "CARTAO_DEBITO",
-      "valorTotal": 90,
-      "pontosGanhos": 90,
-      "origem": {
-        "tipo": "BALCAO",
-        "identificacao": "Caixa 01"
-      },
-      "motivoCancelamento": null
-    },
-    {
       "id": 1026,
       "status": "CONCLUIDO",
       "modalidade": "CONSUMO_LOCAL",
@@ -1104,41 +1022,6 @@
       "motivoCancelamento": null
     },
     {
-      "id": 1033,
-      "status": "CONCLUIDO",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 1535,
-      "cliente": {
-        "id": 111,
-        "nome": "Larissa Mendes",
-        "telefone": "11954321098"
-      },
-      "itens": [
-        {
-          "produtoId": 1,
-          "nome": "Suco Verde Especial",
-          "quantidade": 2,
-          "valorTotal": 28
-        },
-        {
-          "produtoId": 12,
-          "nome": "Salada Caesar Light",
-          "quantidade": 1,
-          "valorTotal": 32
-        }
-      ],
-      "observacao": null,
-      "formaPagamento": "PIX",
-      "valorTotal": 60,
-      "pontosGanhos": 60,
-      "origem": {
-        "tipo": "TOTEM",
-        "identificacao": "Kiosk 02"
-      },
-      "motivoCancelamento": null
-    },
-    {
       "id": 1034,
       "status": "CONCLUIDO",
       "modalidade": "RETIRADA",
@@ -1228,82 +1111,6 @@
       "formaPagamento": "PIX",
       "valorTotal": 38,
       "pontosGanhos": 38,
-      "origem": {
-        "tipo": "TOTEM",
-        "identificacao": "Kiosk 02"
-      },
-      "motivoCancelamento": null
-    },
-    {
-      "id": 1037,
-      "status": "CANCELADO",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 55,
-      "cliente": {
-        "id": 105,
-        "nome": "Ana Paula Ramos",
-        "telefone": "11985612345"
-      },
-      "itens": [
-        {
-          "produtoId": 10,
-          "nome": "Temaki Salmão Simples",
-          "quantidade": 1,
-          "valorTotal": 34
-        },
-        {
-          "produtoId": 11,
-          "nome": "Refrigerante Zero 350ml",
-          "quantidade": 1,
-          "valorTotal": 8
-        }
-      ],
-      "observacao": null,
-      "formaPagamento": "CARTAO_CREDITO",
-      "valorTotal": 42,
-      "pontosGanhos": 0,
-      "origem": {
-        "tipo": "TOTEM",
-        "identificacao": "Kiosk 01"
-      },
-      "motivoCancelamento": "Cancelado pelo cliente"
-    },
-    {
-      "id": 1038,
-      "status": "PRONTO_PARA_RETIRADA",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 48,
-      "cliente": {
-        "id": 113,
-        "nome": "Camila Freitas",
-        "telefone": "11932109876"
-      },
-      "itens": [
-        {
-          "produtoId": 3,
-          "nome": "Combo Fit Treino",
-          "quantidade": 2,
-          "valorTotal": 56
-        },
-        {
-          "produtoId": 4,
-          "nome": "Wrap Proteico Frango Orgânico",
-          "quantidade": 1,
-          "valorTotal": 34
-        },
-        {
-          "produtoId": 11,
-          "nome": "Refrigerante Zero 350ml",
-          "quantidade": 1,
-          "valorTotal": 8
-        }
-      ],
-      "observacao": null,
-      "formaPagamento": "CARTAO_CREDITO",
-      "valorTotal": 98,
-      "pontosGanhos": 98,
       "origem": {
         "tipo": "TOTEM",
         "identificacao": "Kiosk 02"
@@ -1558,41 +1365,6 @@
       "valorTotal": 30.5,
       "pontosGanhos": 30,
       "origem": null,
-      "motivoCancelamento": null
-    },
-    {
-      "id": 1047,
-      "status": "PAGO",
-      "modalidade": "RETIRADA",
-      "mesa": null,
-      "criadoEmMinutosAtras": 7,
-      "cliente": {
-        "id": 103,
-        "nome": "Mariana Rios",
-        "telefone": "11988410022"
-      },
-      "itens": [
-        {
-          "produtoId": 2,
-          "nome": "Suco Laranja Pêra",
-          "quantidade": 2,
-          "valorTotal": 28
-        },
-        {
-          "produtoId": 3,
-          "nome": "Combo Fit Treino",
-          "quantidade": 1,
-          "valorTotal": 28
-        }
-      ],
-      "observacao": "Sem gelo, por favor",
-      "formaPagamento": "VOUCHER",
-      "valorTotal": 56,
-      "pontosGanhos": 56,
-      "origem": {
-        "tipo": "TOTEM",
-        "identificacao": "Kiosk 02"
-      },
       "motivoCancelamento": null
     },
     {
