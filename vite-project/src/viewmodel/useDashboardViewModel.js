@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PERIODOS, PERIODO_PADRAO, buscarPeriodo } from '../model/constants/periodos.js'
 import * as dashboardService from '../model/services/dashboardService.js'
+import { INTERVALO_ATUALIZACAO_MS } from '../model/constants/pedidos.js'
 import { estadoDoBloco, useBloco } from './useBloco.js'
+import { usePolling } from './usePolling.js'
 
 export const TAMANHO_PAGINA_TABELA = 4
 
@@ -66,6 +68,9 @@ export function useDashboardViewModel(periodoInicial = PERIODO_PADRAO) {
     },
     [carregadores],
   )
+
+  // Atualização automática a cada 30 s, sem piscar (pausa com a aba oculta).
+  usePolling((signal) => recarregar(undefined, { silencioso: true, signal }), INTERVALO_ATUALIZACAO_MS)
 
   return {
     periodos: { lista: PERIODOS, ativo: periodo, info: buscarPeriodo(periodo), selecionar: selecionarPeriodo },
