@@ -19,13 +19,19 @@ export function useDashboardViewModel(periodoInicial = PERIODO_PADRAO) {
   const tabela = useBloco((signal) =>
     dashboardService.buscarTabela({ periodo, pagina: paginaTabela, tamanho: TAMANHO_PAGINA_TABELA }, signal),
   )
+  const pagamentos = useBloco((signal) => dashboardService.buscarPagamentos({ periodo }, signal))
+  const produtos = useBloco((signal) => dashboardService.buscarProdutosMaisVendidos({ periodo }, signal))
 
   const { carregar: carregarKpis } = kpis
   const { carregar: carregarTabela } = tabela
+  const { carregar: carregarPagamentos } = pagamentos
+  const { carregar: carregarProdutos } = produtos
 
   useEffect(() => {
     carregarKpis()
-  }, [periodo, carregarKpis])
+    carregarPagamentos()
+    carregarProdutos()
+  }, [periodo, carregarKpis, carregarPagamentos, carregarProdutos])
 
   // Trocar de página só recarrega a tabela.
   useEffect(() => {
@@ -48,10 +54,11 @@ export function useDashboardViewModel(periodoInicial = PERIODO_PADRAO) {
   )
 
   const carregadores = useMemo(
-    () => ({ kpis: carregarKpis, tabela: carregarTabela }),
-    [carregarKpis, carregarTabela],
+    () => ({ kpis: carregarKpis, tabela: carregarTabela, pagamentos: carregarPagamentos, produtos: carregarProdutos }),
+    [carregarKpis, carregarTabela, carregarPagamentos, carregarProdutos],
   )
 
+  /** Recarrega um bloco (`'kpis' | 'tabela' | 'pagamentos' | 'produtos'`) ou todos. */
   const recarregar = useCallback(
     (bloco, opcoes) => {
       if (bloco) return carregadores[bloco]?.(opcoes)
@@ -64,6 +71,8 @@ export function useDashboardViewModel(periodoInicial = PERIODO_PADRAO) {
     periodos: { lista: PERIODOS, ativo: periodo, info: buscarPeriodo(periodo), selecionar: selecionarPeriodo },
     kpis: estadoDoBloco(kpis),
     tabela: { ...estadoDoBloco(tabela), pagina: paginaTabela, tamanho: TAMANHO_PAGINA_TABELA },
+    pagamentos: estadoDoBloco(pagamentos),
+    produtos: estadoDoBloco(produtos),
     irParaPagina,
     recarregar,
   }
