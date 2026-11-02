@@ -20,7 +20,6 @@ const COLUNAS = ['Pedido', 'Cliente', 'Valor total', 'Itens do pedido', 'Modalid
 
 const TOM_MODALIDADE = {
   [MODALIDADE.RETIRADA]: 'verde',
-  [MODALIDADE.ENTREGA]: 'neutro',
   [MODALIDADE.CONSUMO_LOCAL]: 'laranja',
 }
 
@@ -77,7 +76,7 @@ function Linha({ pedido }) {
       </td>
       <td data-rotulo="Modalidade">
         <Chip tom={cancelado ? 'apagado' : (TOM_MODALIDADE[pedido.modalidade] ?? 'neutro')}>
-          {rotuloModalidade(pedido.modalidade, pedido.mesa)}
+          {rotuloModalidade(pedido.modalidade)}
         </Chip>
       </td>
       <td data-rotulo="Data & horário" className={`${styles.data} tabular`}>

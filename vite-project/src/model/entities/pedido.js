@@ -3,7 +3,6 @@
 
 import {
   FUSO_HORARIO,
-  MODALIDADE,
   ROTULO_FORMA_DISTRIBUICAO,
   ROTULO_MODALIDADE,
   ROTULO_PAGAMENTO,
@@ -93,14 +92,9 @@ export function tempoRelativo(iso, agora = Date.now()) {
   return dias === 1 ? 'Há 1 dia' : `Há ${dias} dias`
 }
 
-/**
- * Rótulo da modalidade. Em CONSUMO_LOCAL com mesa: "Consumo Local / Mesa 02".
- * Valor desconhecido: o código bruto.
- */
-export function rotuloModalidade(modalidade, mesa) {
-  const rotulo = ROTULO_MODALIDADE[modalidade] ?? modalidade ?? TRACO
-  if (modalidade === MODALIDADE.CONSUMO_LOCAL && mesa) return `${rotulo} / Mesa ${mesa}`
-  return rotulo
+/** "RETIRADA" → "Retirada Balcão"; "CONSUMO_LOCAL" → "Consumo Local". Valor desconhecido: o código bruto. */
+export function rotuloModalidade(modalidade) {
+  return ROTULO_MODALIDADE[modalidade] ?? modalidade ?? TRACO
 }
 
 /** "PIX" → "PIX Instantâneo". Valor desconhecido: o código bruto. */
