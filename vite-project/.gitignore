@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Mock local (gerado a partir do db.example.json)
+db.json
+.env
