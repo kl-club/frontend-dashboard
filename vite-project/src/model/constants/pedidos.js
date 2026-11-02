@@ -12,13 +12,11 @@ export const STATUS = Object.freeze({
 export const MODALIDADE = Object.freeze({
   RETIRADA: 'RETIRADA',
   CONSUMO_LOCAL: 'CONSUMO_LOCAL',
-  ENTREGA: 'ENTREGA',
 })
 
 export const ROTULO_MODALIDADE = Object.freeze({
   RETIRADA: 'Retirada Balcão',
   CONSUMO_LOCAL: 'Consumo Local',
-  ENTREGA: 'Entrega // Motoboy',
 })
 
 /** Modalidades aceitas no filtro do histórico (só as da spec). */
