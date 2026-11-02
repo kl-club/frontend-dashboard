@@ -1,0 +1,16 @@
+.esqueleto {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--cinza-100) 0%, var(--cinza-200) 50%, var(--cinza-100) 100%);
+  background-size: 200% 100%;
+  animation: brilho 1.3s ease-in-out infinite;
+}
+
+@keyframes brilho {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}

@@ -1,0 +1,73 @@
+.abas {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.aba {
+  position: relative;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.aba:not([aria-disabled='true']):not(.ativa):hover {
+  background: var(--cinza-100);
+}
+
+.ativa {
+  background: var(--verde-600);
+  color: var(--branco);
+}
+
+.aba[aria-disabled='true'] {
+  color: var(--cinza-400);
+}
+
+.dica {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 20;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--cinza-900);
+  color: var(--branco);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s;
+}
+
+.aba:hover .dica,
+.aba:focus-visible .dica {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Em telas estreitas a lista rola; a dica fica sobre a própria aba. */
+@media (max-width: 767px) {
+  .dica {
+    position: fixed;
+    top: auto;
+    bottom: 16px;
+    left: 50%;
+  }
+}
