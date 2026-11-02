@@ -103,8 +103,7 @@ A rota `/cadastro` (fluxo do QR Code) não muda.
 | --- | --- | --- |
 | `status` **[Spec]** | `PENDENTE`, `PAGO`, `EM_PREPARO`, `PRONTO_PARA_RETIRADA`, `CONCLUIDO`, `CANCELADO` | Usado só para decidir a coluna/estilo; não é exibido como texto |
 | `modalidade` **[Spec]** | `RETIRADA` | Retirada Balcão |
-| | `CONSUMO_LOCAL` | Consumo Local / Mesa NN |
-| | `ENTREGA` **[Protótipo]** | Entrega // Motoboy |
+| | `CONSUMO_LOCAL` | Consumo Local |
 | `formaPagamento` (pedido) **[Proposta]** | `PIX` | PIX Instantâneo |
 | | `CARTAO_CREDITO` | Cartão de Crédito |
 | | `CARTAO_DEBITO` | Cartão de Débito |
@@ -360,7 +359,7 @@ As duas respostas de sucesso (`200`) devolvem o `Pedido` atualizado.
     {
       "id": 1039,
       "status": "CANCELADO",
-      "modalidade": "ENTREGA",
+      "modalidade": "RETIRADA",
       "criadoEm": "2026-11-02T12:45:00-03:00",
       "cliente": { "id": 241, "nome": "Ana Paula Ramos", "telefone": "11985612345" },
       "itens": [
@@ -491,7 +490,7 @@ O selo da aba "Pedidos de Hoje" é a soma dos tamanhos das quatro listas.
 | Cliente | Nome. Segunda linha: telefone com máscara `(11) 98841-2290`; em `CONSUMO_LOCAL`, `Mesa 02 // Salão` em laranja; em `CANCELADO`, o `motivoCancelamento` (ou "Cancelado") em vermelho |
 | Valor total | `R$ 38,00` com chip `+38 pts`. Cancelado: valor riscado e chip "Cancelado" |
 | Itens do pedido | `1× Sunomono Especial, 2× Suco Detox Refrescante`, uma linha com reticências e lista completa no `title` |
-| Modalidade | Chip: Retirada Balcão (verde), Entrega // Motoboy (cinza), Consumo Local / Mesa 02 (laranja) |
+| Modalidade | Chip: Retirada Balcão (verde) ou Consumo Local (laranja), sem número da mesa |
 | Data e horário | `02/11/2026 14:05`, fuso `America/Sao_Paulo` |
 
 Pedido cancelado: linha com fundo levemente avermelhado e chip de modalidade acinzentado.
@@ -528,7 +527,7 @@ Coleções: `pedidos`, `clientes`, `produtos`, `configuracoes` (nome/estado da l
 
 - **Datas relativas:** o `db.example.json` guarda `criadoEmMinutosAtras` (ex.: `1`, `45`, `1440`) e o servidor converte em `criadoEm` real ao iniciar (`America/Sao_Paulo`). Assim "hoje" sempre tem dados.
 - **Coerência entre telas:** os números sempre vêm dos dados, nunca fixos. Sugestão de massa: hoje, 4 novos + 5 em preparo + 3 prontos + 2 concluídos + 1 cancelado, mais pedidos de ontem (para variação e ticket anterior) e pelo menos 40 pedidos no total (para exercitar a paginação do histórico).
-- **Cobertura:** incluir as 3 modalidades, pedidos com `observacao`, com `mesa`, com `origem` de totem, cancelados com e sem motivo, e as 4 formas de pagamento.
+- **Cobertura:** incluir as 2 modalidades, pedidos com `observacao`, com `mesa`, com `origem` de totem, cancelados com e sem motivo, e as 4 formas de pagamento.
 - **Simular falhas [Proposta]:** o mock aceita `?_delay=600` (latência em ms) e `?_erro=500` para testar carregamento e erro.
 - **Testes manuais:** o `db.json` local é alterado pelos `PATCH`. Para restaurar o estado inicial, apagar o `db.json` e rodar o script de geração do projeto.
 
@@ -621,7 +620,7 @@ Pontos que precisam de confirmação com o back-end e o design. Enquanto isso, v
 | # | Ponto | Especificação | Protótipo | Decisão adotada |
 | --- | --- | --- | --- | --- |
 | 1 | Itens do pedido | Só o nome do produto | `2× Suco Verde`, e valor da linha em T3 | O contrato traz `nome`, `quantidade` e `valorTotal` |
-| 2 | Modalidade | Retirada ou consumo no local | Inclui "Entrega // Motoboy" | `ENTREGA` aceito na exibição; filtro com as 2 da spec |
+| 2 | Modalidade | Retirada ou consumo no local | Inclui "Entrega // Motoboy" | Só `RETIRADA` e `CONSUMO_LOCAL`; `ENTREGA` foi removida (exibição, filtro e mock) |
 | 3 | Formas de pagamento | "Cartão de crédito" | "Cartão de Crédito / Débito" e "VR / Refeição / Vouchers" agrupados | Pedido com código por forma; distribuição agrupa `CARTAO` |
 | 4 | Meta de faturamento | Não existe | "Meta: R$ 3.000,00" | Campo opcional `faturamento.meta` |
 | 5 | Origem do pedido | Não existe | "83% via Totem" e etiqueta "Kiosk 02" | Campos opcionais `percentualViaTotem` e `origem` |
