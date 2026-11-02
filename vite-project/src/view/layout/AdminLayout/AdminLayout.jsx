@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { useResumoPedidosViewModel } from '../../../viewmodel/useResumoPedidosViewModel.js'
 import Icone from '../../components/Icone/Icone.jsx'
 import Sidebar from './Sidebar.jsx'
 import Topbar from './Topbar.jsx'
@@ -10,6 +11,7 @@ const ID_MENU = 'menu-principal'
 export default function AdminLayout() {
   const [menuAberto, setMenuAberto] = useState(false)
   const { pathname } = useLocation()
+  const resumo = useResumoPedidosViewModel()
   const emPedidos = pathname.startsWith('/pedidos')
 
   useEffect(() => {
@@ -23,7 +25,12 @@ export default function AdminLayout() {
 
   return (
     <div className={styles.layout}>
-      <Sidebar id={ID_MENU} aberta={menuAberto} onNavegar={() => setMenuAberto(false)} />
+      <Sidebar
+        id={ID_MENU}
+        aberta={menuAberto}
+        badgePedidos={resumo.totalHistorico}
+        onNavegar={() => setMenuAberto(false)}
+      />
       {menuAberto && <div className={styles.veu} onClick={() => setMenuAberto(false)} aria-hidden="true" />}
 
       <div className={styles.principal}>
@@ -43,10 +50,10 @@ export default function AdminLayout() {
           </span>
         </div>
 
-        {emPedidos && <Topbar />}
+        {emPedidos && <Topbar loja={resumo.loja} />}
 
         <main className={styles.conteudo}>
-          <Outlet />
+          <Outlet context={{ resumo }} />
         </main>
       </div>
     </div>
