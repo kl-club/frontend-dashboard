@@ -1,5 +1,6 @@
 import { useDashboardViewModel } from '../../../viewmodel/useDashboardViewModel.js'
 import KpiGrid from '../../components/KpiGrid/KpiGrid.jsx'
+import PedidosDashboardTable from '../../components/PedidosDashboardTable/PedidosDashboardTable.jsx'
 import PeriodoTabs from '../../components/PeriodoTabs/PeriodoTabs.jsx'
 import styles from './DashboardPage.module.css'
 
@@ -15,6 +16,14 @@ export default function DashboardPage() {
       </header>
 
       <KpiGrid bloco={vm.kpis} rotuloPeriodo={periodos.info.rotuloTitulo} onTentarNovamente={() => vm.recarregar('kpis')} />
+
+      <PedidosDashboardTable
+        bloco={vm.tabela}
+        pagina={vm.tabela.pagina}
+        tamanho={vm.tabela.tamanho}
+        onIrParaPagina={vm.irParaPagina}
+        onTentarNovamente={() => vm.recarregar('tabela')}
+      />
     </div>
   )
 }
