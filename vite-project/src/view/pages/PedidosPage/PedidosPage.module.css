@@ -93,3 +93,18 @@
     font-size: 22px;
   }
 }
+
+.conteudoAba {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.barraFerramentas {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
