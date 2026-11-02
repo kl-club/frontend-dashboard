@@ -1,0 +1,177 @@
+/* ==========================================================================
+   Tokens globais — KL CLUB Gestão
+   ========================================================================== */
+
+:root {
+  /* Marca (verdes) */
+  --verde-900: #0e3b2c;
+  --verde-800: #134d39;
+  --verde-700: #1b6a4e;
+  --verde-600: #218a62;
+  --verde-500: #2bab79;
+  --verde-200: #bfe6d3;
+  --verde-100: #e5f5ec;
+  --verde-50: #f3faf6;
+
+  /* Neutros */
+  --cinza-900: #1d2421;
+  --cinza-700: #3c4642;
+  --cinza-600: #5b6662;
+  --cinza-500: #7d8783;
+  --cinza-400: #a3aca8;
+  --cinza-300: #cfd5d2;
+  --cinza-200: #e3e8e5;
+  --cinza-100: #f0f3f1;
+  --cinza-50: #f7f9f8;
+  --branco: #ffffff;
+
+  /* Feedback */
+  --danger: #c93a3a;
+  --danger-escuro: #9f2828;
+  --danger-claro: #fdeaea;
+  --sucesso: var(--verde-600);
+  --alerta: #b7791f;
+
+  /* Tokens semânticos de status (quadro de pedidos) */
+  --status-novo: #d98a0b;
+  --status-novo-bg: #fff6e5;
+  --status-preparo: #2f6fd6;
+  --status-preparo-bg: #eaf1fd;
+  --status-pronto: #7b4bd1;
+  --status-pronto-bg: #f2ecfd;
+  --status-concluido: var(--verde-600);
+  --status-concluido-bg: var(--verde-100);
+
+  /* Pontos e cancelado */
+  --pontos: #e8751a;
+  --pontos-bg: #fff0e3;
+  --cancelado-bg: #fff5f5;
+
+  /* Superfícies e texto */
+  --fundo: #f4f6f5;
+  --superficie: var(--branco);
+  --borda: var(--cinza-200);
+  --texto: var(--cinza-900);
+  --texto-suave: var(--cinza-600);
+  --texto-fraco: var(--cinza-500);
+
+  /* Forma */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+  --sombra: 0 1px 2px rgba(16, 40, 30, 0.06), 0 2px 8px rgba(16, 40, 30, 0.04);
+  --sombra-alta: 0 12px 32px rgba(16, 40, 30, 0.18);
+  --foco: 0 0 0 3px rgba(43, 171, 121, 0.45);
+
+  /* Layout */
+  --sidebar-largura: 248px;
+  --sidebar-compacta: 76px;
+  --topbar-altura: 64px;
+
+  --fonte: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fonte);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--texto);
+  background: var(--fundo);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--foco);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulsar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
