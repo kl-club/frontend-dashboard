@@ -165,11 +165,14 @@ a.ativo:hover {
 @media (max-width: 767px) {
   .sidebar {
     transform: translateX(-100%);
-    transition: transform 0.22s ease;
-    box-shadow: var(--sombra-alta);
+    visibility: hidden;
+    transition: transform 0.22s ease, visibility 0s linear 0.22s;
   }
 
   .aberta {
     transform: translateX(0);
+    visibility: visible;
+    box-shadow: var(--sombra-alta);
+    transition: transform 0.22s ease, visibility 0s;
   }
 }

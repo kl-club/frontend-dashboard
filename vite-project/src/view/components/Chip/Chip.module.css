@@ -57,3 +57,17 @@
   background: var(--verde-500);
   animation: pulsar 1.6s ease-in-out infinite;
 }
+
+.auto {
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+
+.auto::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--verde-500);
+  animation: pulsar 1.6s ease-in-out infinite;
+}
