@@ -1,0 +1,20 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1440px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.titulo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
