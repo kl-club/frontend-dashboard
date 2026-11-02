@@ -1,7 +1,6 @@
 import {
   formatarInteiro,
   formatarMoeda,
-  formatarPercentual,
   formatarVariacao,
 } from '../../../model/entities/pedido.js'
 import EstadoBloco from '../EstadoBloco/EstadoBloco.jsx'
@@ -34,7 +33,6 @@ function montarCartoes(dados, rotuloPeriodo) {
       icone: 'dinheiro',
       titulo: `Faturamento ${rotuloPeriodo}`,
       valor: formatarMoeda(faturamento.valor ?? 0),
-      apoio: ehNumero(faturamento.meta) ? `Meta: ${formatarMoeda(faturamento.meta)}` : null,
     },
     {
       id: 'pedidos',
@@ -56,7 +54,6 @@ function montarCartoes(dados, rotuloPeriodo) {
       icone: 'clientes',
       titulo: 'Clientes atendidos',
       valor: plural(clientes.quantidade ?? 0, 'cliente', 'clientes'),
-      apoio: ehNumero(clientes.percentualViaTotem) ? `${formatarPercentual(clientes.percentualViaTotem)} via Totem` : null,
     },
   ]
 }
