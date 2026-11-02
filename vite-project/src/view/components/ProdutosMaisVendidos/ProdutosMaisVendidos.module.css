@@ -1,0 +1,53 @@
+.corpo {
+  padding: 0 20px 16px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borda);
+  min-width: 0;
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.posicao {
+  flex: none;
+  min-width: 28px;
+  font-weight: 800;
+  color: var(--verde-700);
+}
+
+.nome {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.numeros {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.numeros strong {
+  color: var(--texto);
+  font-size: 14px;
+}

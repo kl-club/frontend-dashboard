@@ -1,0 +1,73 @@
+.corpo {
+  padding: 4px 20px 20px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.rotulo {
+  font-weight: 600;
+}
+
+.numeros {
+  color: var(--texto-suave);
+  white-space: nowrap;
+}
+
+.numeros strong {
+  color: var(--texto);
+}
+
+.trilho {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--cinza-100);
+  overflow: hidden;
+}
+
+.barra {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+.pix {
+  background: var(--verde-500);
+}
+
+.cartao {
+  background: var(--cinza-700);
+}
+
+.dinheiro {
+  background: #7fa392;
+}
+
+.voucher {
+  background: var(--pontos);
+}
+
+.outro {
+  background: var(--cinza-400);
+}

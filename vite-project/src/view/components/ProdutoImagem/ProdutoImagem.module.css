@@ -1,0 +1,19 @@
+.imagem,
+.inicial {
+  flex: none;
+  border-radius: 10px;
+}
+
+.imagem {
+  object-fit: cover;
+  background: var(--cinza-100);
+}
+
+.inicial {
+  display: grid;
+  place-items: center;
+  background: var(--cinza-100);
+  color: var(--cinza-600);
+  font-weight: 800;
+  font-size: 16px;
+}

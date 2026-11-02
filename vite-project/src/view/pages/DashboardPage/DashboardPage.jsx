@@ -1,8 +1,14 @@
 import { useDashboardViewModel } from '../../../viewmodel/useDashboardViewModel.js'
+import DistribuicaoPagamentos from '../../components/DistribuicaoPagamentos/DistribuicaoPagamentos.jsx'
 import KpiGrid from '../../components/KpiGrid/KpiGrid.jsx'
 import PedidosDashboardTable from '../../components/PedidosDashboardTable/PedidosDashboardTable.jsx'
 import PeriodoTabs from '../../components/PeriodoTabs/PeriodoTabs.jsx'
+import ProdutosMaisVendidos from '../../components/ProdutosMaisVendidos/ProdutosMaisVendidos.jsx'
 import styles from './DashboardPage.module.css'
+
+function capitalizar(texto) {
+  return texto ? texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase() : ''
+}
 
 export default function DashboardPage() {
   const vm = useDashboardViewModel()
@@ -24,6 +30,15 @@ export default function DashboardPage() {
         onIrParaPagina={vm.irParaPagina}
         onTentarNovamente={() => vm.recarregar('tabela')}
       />
+
+      <div className={styles.ladoALado}>
+        <DistribuicaoPagamentos bloco={vm.pagamentos} onTentarNovamente={() => vm.recarregar('pagamentos')} />
+        <ProdutosMaisVendidos
+          bloco={vm.produtos}
+          rotuloFiltro={capitalizar(periodos.info.rotulo)}
+          onTentarNovamente={() => vm.recarregar('produtos')}
+        />
+      </div>
     </div>
   )
 }
