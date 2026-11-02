@@ -1,0 +1,58 @@
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.titulo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.icone {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+
+.valor {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apoio {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+.positivo {
+  color: var(--verde-600);
+}
+
+.negativo {
+  color: var(--danger);
+}
