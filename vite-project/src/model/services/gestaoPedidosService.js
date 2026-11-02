@@ -10,3 +10,15 @@ export async function buscarLista(chave, signal) {
   const { data } = await httpClient.get(`/pedidos/gestao/${lista.rota}`, { signal })
   return Array.isArray(data) ? data : []
 }
+
+/** PATCH sem corpo: o back-end decide o próximo status. Devolve o Pedido atualizado. */
+export async function avancar(id) {
+  const { data } = await httpClient.patch(`/pedidos/${id}/avancar`)
+  return data
+}
+
+/** PATCH sem corpo: só a partir de PENDENTE ou PAGO. Devolve o Pedido atualizado. */
+export async function cancelar(id) {
+  const { data } = await httpClient.patch(`/pedidos/${id}/cancelar`)
+  return data
+}
