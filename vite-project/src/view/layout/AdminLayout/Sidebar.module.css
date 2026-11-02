@@ -1,0 +1,175 @@
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  width: var(--sidebar-largura);
+  display: flex;
+  flex-direction: column;
+  background: var(--verde-900);
+  color: var(--verde-100);
+  padding: 20px 14px;
+  gap: 24px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  min-height: 40px;
+}
+
+.logo {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--verde-500);
+  color: var(--branco);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.marcaTexto {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--branco);
+  white-space: nowrap;
+}
+
+.marcaTexto small {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--verde-200);
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--verde-100);
+  text-decoration: none;
+  font-weight: 500;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+a.item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ativo {
+  background: var(--verde-700);
+  color: var(--branco);
+  font-weight: 600;
+}
+
+a.ativo:hover {
+  background: var(--verde-700);
+}
+
+.rotulo {
+  flex: 1;
+}
+
+.badge {
+  min-width: 24px;
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pontos);
+  color: var(--branco);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.desabilitado {
+  opacity: 0.5;
+}
+
+.emBreve {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.rodape {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+.sair {
+  opacity: 0.75;
+}
+
+/* 768–1199 px: barra de ícones */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .sidebar {
+    width: var(--sidebar-compacta);
+    padding: 20px 10px;
+    align-items: center;
+  }
+
+  .marcaTexto,
+  .rotulo,
+  .emBreve {
+    display: none;
+  }
+
+  .marca {
+    padding: 0;
+  }
+
+  .item {
+    justify-content: center;
+    padding: 12px;
+    position: relative;
+  }
+
+  .badge {
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    min-width: 20px;
+    padding: 0 5px;
+    font-size: 10px;
+  }
+}
+
+/* < 768 px: gaveta */
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.22s ease;
+    box-shadow: var(--sombra-alta);
+  }
+
+  .aberta {
+    transform: translateX(0);
+  }
+}

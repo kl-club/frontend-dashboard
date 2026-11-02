@@ -1,0 +1,88 @@
+.layout {
+  min-height: 100vh;
+}
+
+.principal {
+  margin-left: var(--sidebar-largura);
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudo {
+  flex: 1;
+  min-width: 0;
+  padding: 28px;
+}
+
+.barraMobile {
+  display: none;
+}
+
+.veu {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .principal {
+    margin-left: var(--sidebar-compacta);
+  }
+
+  .conteudo {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .principal {
+    margin-left: 0;
+  }
+
+  .conteudo {
+    padding: 16px;
+  }
+
+  .barraMobile {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 56px;
+    padding: 0 8px;
+    background: var(--verde-900);
+    color: var(--branco);
+  }
+
+  .botaoMenu {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+  }
+
+  .marcaMobile {
+    font-weight: 800;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .marcaMobile span {
+    font-weight: 500;
+    color: var(--verde-200);
+  }
+
+  .veu {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgba(10, 30, 22, 0.45);
+  }
+}
