@@ -35,7 +35,7 @@ function Coluna({ definicao, bloco, ativa, renderAcoes, acaoEmAndamento, onTenta
             </div>
           ))}
         {bloco.status === 'error' && (
-          <EstadoBloco tipo="erro" compacto mensagem={bloco.error?.message} acao={onTentarNovamente} />
+          <EstadoBloco tipo="erro" compacto mensagem={bloco.error?.message} acao={onTentarNovamente ? () => onTentarNovamente(definicao.chave) : undefined} />
         )}
         {bloco.status === 'success' && pedidos.length === 0 && <EstadoBloco compacto mensagem="Nenhum pedido" />}
         {bloco.status === 'success' &&
