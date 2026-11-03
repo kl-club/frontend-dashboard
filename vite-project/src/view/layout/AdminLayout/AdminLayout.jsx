@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useResumoPedidosViewModel } from '../../../viewmodel/useResumoPedidosViewModel.js'
+import { useSessaoViewModel } from '../../../viewmodel/useSessaoViewModel.js'
 import Icone from '../../components/Icone/Icone.jsx'
 import Sidebar from './Sidebar.jsx'
 import Topbar from './Topbar.jsx'
@@ -12,6 +13,7 @@ export default function AdminLayout() {
   const [menuAberto, setMenuAberto] = useState(false)
   const { pathname } = useLocation()
   const resumo = useResumoPedidosViewModel()
+  const { sair } = useSessaoViewModel()
   const emPedidos = pathname.startsWith('/pedidos')
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function AdminLayout() {
         aberta={menuAberto}
         badgePedidos={resumo.totalHistorico}
         onNavegar={() => setMenuAberto(false)}
+        onSair={sair}
       />
       {menuAberto && <div className={styles.veu} onClick={() => setMenuAberto(false)} aria-hidden="true" />}
 

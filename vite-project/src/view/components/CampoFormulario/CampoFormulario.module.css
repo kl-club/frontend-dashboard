@@ -1,0 +1,84 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rotulo {
+  font-size: 15px;
+  font-weight: 500;
+  color: #181d19;
+}
+
+.caixa {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icone {
+  position: absolute;
+  left: 20px;
+  color: #6f7a70;
+  pointer-events: none;
+}
+
+.entrada {
+  width: 100%;
+  height: 56px;
+  padding: 0 20px 0 54px;
+  border-radius: 16px;
+  border: 1px solid #d3dbd1;
+  background: #f0f5ee;
+  color: #181d19;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.entrada::placeholder {
+  color: #3f4941;
+  opacity: 0.85;
+}
+
+.comSufixo {
+  padding-right: 56px;
+}
+
+.entrada:hover:not(:disabled) {
+  border-color: #a9b8ab;
+}
+
+.entrada:focus {
+  border-color: #1f7a4c;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(31, 122, 76, 0.25);
+}
+
+.entrada:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.invalida .entrada {
+  border-color: #ba1a1a;
+}
+
+.invalida .entrada:focus {
+  box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.2);
+}
+
+.sufixo {
+  position: absolute;
+  right: 8px;
+  display: flex;
+  align-items: center;
+}

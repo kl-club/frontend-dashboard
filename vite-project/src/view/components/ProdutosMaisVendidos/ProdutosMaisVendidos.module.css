@@ -1,37 +1,61 @@
 .corpo {
-  padding: 0 20px 16px;
+  flex: 1;
+  padding: 0 20px 22px;
+}
+
+.filtro {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: #c4e8cf;
+  color: #00522f;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .lista {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
+/* Cada produto é uma faixa verde-escura: foto, posição, nome e vendas. */
 .item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--borda);
+  gap: 14px;
+  padding: 12px 20px 12px 12px;
+  border-radius: 16px;
+  background: #006037;
+  color: #fff;
   min-width: 0;
-}
-
-.item:last-child {
-  border-bottom: 0;
 }
 
 .posicao {
   flex: none;
-  min-width: 28px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  color: #006037;
+  font-size: 12px;
   font-weight: 800;
-  color: var(--verde-700);
 }
 
 .nome {
   flex: 1;
   min-width: 0;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -44,10 +68,12 @@
   align-items: flex-end;
   white-space: nowrap;
   font-size: 13px;
-  color: var(--texto-suave);
+  color: #aeffc9;
 }
 
 .numeros strong {
-  color: var(--texto);
-  font-size: 14px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 800;
 }
