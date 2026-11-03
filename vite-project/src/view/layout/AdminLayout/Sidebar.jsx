@@ -12,7 +12,7 @@ function classeLink({ isActive }) {
   return isActive ? `${styles.item} ${styles.ativo}` : styles.item
 }
 
-export default function Sidebar({ id, aberta, badgePedidos, onNavegar }) {
+export default function Sidebar({ id, aberta, badgePedidos, onNavegar, onSair }) {
   return (
     <aside id={id} className={`${styles.sidebar} ${aberta ? styles.aberta : ''}`} aria-label="Menu principal">
       <div className={styles.marca}>
@@ -54,7 +54,7 @@ export default function Sidebar({ id, aberta, badgePedidos, onNavegar }) {
       </nav>
 
       <div className={styles.rodape}>
-        <button type="button" className={`${styles.item} ${styles.sair}`} aria-disabled="true" title="Sair — sem autenticação nesta sprint">
+        <button type="button" className={`${styles.item} ${styles.sair}`} title="Sair" onClick={onSair}>
           <Icone nome="sair" tamanho={20} />
           <span className={styles.rotulo}>Sair</span>
         </button>

@@ -1,5 +1,7 @@
+/* Cores por forma de pagamento (bolinha, porcentagem e barra usam a mesma). */
 .corpo {
-  padding: 4px 20px 20px;
+  flex: 1;
+  padding: 4px 20px 22px;
 }
 
 .lista {
@@ -8,13 +10,14 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 .item {
+  --cor-forma: #7d8783;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .linha {
@@ -26,22 +29,38 @@
 }
 
 .rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
   font-weight: 600;
+  color: var(--texto);
+}
+
+.bolinha {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cor-forma);
 }
 
 .numeros {
-  color: var(--texto-suave);
+  color: var(--texto-fraco);
+  font-size: 13px;
   white-space: nowrap;
 }
 
 .numeros strong {
-  color: var(--texto);
+  color: var(--cor-forma);
+  font-size: 15px;
+  font-weight: 800;
 }
 
 .trilho {
   height: 10px;
   border-radius: var(--radius-pill);
-  background: var(--cinza-100);
+  background: #e9efe6;
   overflow: hidden;
 }
 
@@ -49,25 +68,26 @@
   display: block;
   height: 100%;
   border-radius: inherit;
+  background: var(--cor-forma);
   transition: width 0.4s ease;
 }
 
 .pix {
-  background: var(--verde-500);
+  --cor-forma: #1f7a4c;
 }
 
 .cartao {
-  background: var(--cinza-700);
+  --cor-forma: #2c322d;
 }
 
 .dinheiro {
-  background: #7fa392;
+  --cor-forma: #456551;
 }
 
 .voucher {
-  background: var(--pontos);
+  --cor-forma: #af4f00;
 }
 
 .outro {
-  background: var(--cinza-400);
+  --cor-forma: #7d8783;
 }

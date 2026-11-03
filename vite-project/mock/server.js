@@ -2,6 +2,7 @@
 // Usa o json-server como módulo: as rotas da seção 5 são registradas ANTES do
 // roteador padrão, que continua servindo o CRUD das coleções (ex.: /configuracoes).
 
+import { randomBytes } from 'node:crypto'
 import jsonServer from 'json-server'
 import { prepararBanco, CAMINHO_DB } from './banco.js'
 
@@ -138,6 +139,30 @@ app.use((req, res, next) => {
   }
   if (atraso > 0) setTimeout(seguir, Math.min(atraso, 30_000))
   else seguir()
+})
+
+// ---- Autenticação ----------------------------------------------------------
+// A coleção `usuarios` guarda senha em texto puro: só serve para o mock. Por isso
+// ela não é exposta pelo CRUD genérico do json-server.
+
+app.use('/usuarios', (_req, res) => erro(res, 404, 'NAO_ENCONTRADO', 'Recurso inexistente.'))
+
+app.post('/auth/login', jsonServer.bodyParser, (req, res) => {
+  const { usuario, senha } = req.body ?? {}
+  if (typeof usuario !== 'string' || typeof senha !== 'string' || usuario.trim() === '' || senha === '') {
+    return erro(res, 400, 'PARAMETRO_INVALIDO', 'Informe usuário e senha.')
+  }
+  const alvo = normalizar(usuario.trim())
+  const encontrado = (db.get('usuarios').value() ?? []).find(
+    (u) => u.ativo !== false && (normalizar(u.usuario) === alvo || normalizar(u.email) === alvo),
+  )
+  if (!encontrado || encontrado.senha !== senha) {
+    return erro(res, 401, 'CREDENCIAIS_INVALIDAS', 'Usuário ou senha incorretos.')
+  }
+  return res.json({
+    token: randomBytes(24).toString('base64url'),
+    usuario: { id: encontrado.id, nome: encontrado.nome, perfil: encontrado.perfil },
+  })
 })
 
 const pedidos = () => db.get('pedidos').value()

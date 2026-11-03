@@ -43,6 +43,11 @@ export function criadoEmDe(minutosAtras, agora = Date.now()) {
 export function prepararBanco({ resetar = false } = {}) {
   if (resetar || !existsSync(CAMINHO_DB)) copyFileSync(CAMINHO_EXEMPLO, CAMINHO_DB)
   const banco = JSON.parse(readFileSync(CAMINHO_DB, 'utf8'))
+  // db.json criado antes do login não tem `usuarios`: completa a partir do exemplo.
+  if (!Array.isArray(banco.usuarios)) {
+    const exemplo = JSON.parse(readFileSync(CAMINHO_EXEMPLO, 'utf8'))
+    if (Array.isArray(exemplo.usuarios)) banco.usuarios = exemplo.usuarios
+  }
   const agora = Date.now()
   for (const pedido of banco.pedidos ?? []) {
     if (typeof pedido.criadoEmMinutosAtras === 'number') {

@@ -80,12 +80,13 @@ O interceptor atual troca qualquer erro por uma mensagem genérica e perde o sta
 
 | Rota | Conteúdo |
 | --- | --- |
+| `/login` | Login do funcionário (pública; ver §14) |
 | `/dashboard` | Visão Geral (T1) |
 | `/pedidos` | Redireciona para `/pedidos/hoje` |
 | `/pedidos/hoje` | Pedidos de Hoje (T3) |
 | `/pedidos/historico` | Histórico de Pedidos (T2) |
 
-A rota `/cadastro` (fluxo do QR Code) não muda.
+As demais rotas exigem sessão (§14): sem login, vão para `/login`. A rota `/cadastro` (fluxo do QR Code) não muda.
 
 ## 4. Contrato de dados
 
@@ -683,3 +684,54 @@ Um branch por funcionalidade, na ordem abaixo, com merge `--no-ff` na `main` ao 
 - [ ] Ordenação por valor alterna entre decrescente e crescente.
 - [ ] Pedidos cancelados aparecem com valor riscado e sem pontos.
 - [ ] "Exibindo X–Y de N registros" e a paginação estão corretos na última página, que pode ter menos itens.
+
+## 14. Login do funcionário
+
+O funcionário entra em `/login` com **usuário ou e-mail** e **senha**. Com sucesso, vai para `/dashboard`; com falha, a tela mostra "Login não realizado" e o motivo, sem sair do login.
+
+### 14.1 Contrato **[Proposta]**
+
+**POST `/auth/login`**, corpo `{ "usuario": "gerente", "senha": "..." }`
+
+| HTTP | Corpo | Quando |
+| --- | --- | --- |
+| 200 | `{ "token": "...", "usuario": { "id": 1, "nome": "Marina Souza", "perfil": "GERENTE" } }` | Credenciais corretas |
+| 401 | `{ "codigo": "CREDENCIAIS_INVALIDAS", "mensagem": "Usuário ou senha incorretos." }` | Usuário inexistente, inativo ou senha errada (a mesma resposta para os três, para não revelar se o usuário existe) |
+| 400 | `{ "codigo": "PARAMETRO_INVALIDO", ... }` | Usuário ou senha ausentes |
+
+### 14.2 Camadas
+
+| Camada | Arquivo | Papel |
+| --- | --- | --- |
+| Model | `model/services/authService.js` | `entrar({ usuario, senha })` chama o POST |
+| Model | `model/services/sessaoService.js` | Guarda/lê/limpa a sessão (`sessionStorage`, com queda para a memória) |
+| Model | `model/constants/auth.js` | Rotas e mensagens do login |
+| Model | `model/api/httpClient.js` | Envia `Authorization: Bearer <token>` em toda requisição quando há sessão |
+| ViewModel | `viewmodel/useLoginViewModel.js` | Campos, validação, envio, erro e redirecionamento |
+| ViewModel | `viewmodel/useSessaoViewModel.js` | `{ autenticado, usuario, sair }` |
+| View | `view/pages/LoginPage/` | Tela de login |
+| View | `view/components/{LogoKl,CampoFormulario}/` | Marca e campo com ícone/ação |
+| View | `view/routes/RotaProtegida.jsx` | Envia para `/login` quem não tem sessão |
+
+### 14.3 Regras da tela
+
+- Campos vazios: mensagem "Preencha os campos", sem chamar a API.
+- `401`: "Usuário ou senha incorretos…"; a senha é limpa e o usuário é mantido. Outros erros (sem conexão, 5xx) mostram a mensagem do `ApiError`.
+- A mensagem some ao digitar de novo. O erro é anunciado por leitor de tela (`role="alert"`).
+- O botão do olho mostra/oculta a senha.
+- Quem já está logado e abre `/login` vai direto para `/dashboard`. O botão **Sair** do menu limpa a sessão e volta ao login.
+
+### 14.4 Mock
+
+- Coleção `usuarios` em `db.example.json` (senha em texto puro: **só para o mock**; nunca reutilize essas senhas). Ela não é exposta pelo CRUD do json-server (`/usuarios` responde 404).
+- O `db.json` já existente ganha `usuarios` sozinho na próxima subida da API (ou rode `npm run db:reset`).
+
+| Usuário | E-mail | Senha | Perfil |
+| --- | --- | --- | --- |
+| `gerente` | `gerente@klclub.com` | `kl@2026` | GERENTE |
+| `atendente` | `atendente@klclub.com` | `kl@2026` | ATENDENTE |
+
+### 14.5 Fora do escopo
+
+Recuperação de senha, perfis com permissões diferentes por tela, expiração/renovação do token e validação do token pela API nas demais rotas. Hoje o token só viaja no cabeçalho; o bloqueio das telas é feito pelo front.
+

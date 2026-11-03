@@ -6,6 +6,26 @@
     },
     "metaFaturamentoDiaria": 600
   },
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "Marina Souza",
+      "usuario": "gerente",
+      "email": "gerente@klclub.com",
+      "senha": "kl@2026",
+      "perfil": "GERENTE",
+      "ativo": true
+    },
+    {
+      "id": 2,
+      "nome": "Lucas Almeida",
+      "usuario": "atendente",
+      "email": "atendente@klclub.com",
+      "senha": "kl@2026",
+      "perfil": "ATENDENTE",
+      "ativo": true
+    }
+  ],
   "clientes": [
     {
       "id": 101,

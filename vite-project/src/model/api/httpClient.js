@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { lerToken } from '../services/sessaoService.js'
 
 export const MENSAGEM_GENERICA = 'Não foi possível concluir a operação. Tente novamente.'
 export const MENSAGEM_SEM_CONEXAO = 'Sem conexão com o servidor'
@@ -45,6 +46,13 @@ const httpClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3001',
   timeout: 15_000,
   headers: { Accept: 'application/json' },
+})
+
+// Envia o token da sessão (quando houver) em toda requisição.
+httpClient.interceptors.request.use((config) => {
+  const token = lerToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
 })
 
 httpClient.interceptors.response.use(
