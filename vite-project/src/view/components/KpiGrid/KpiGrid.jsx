@@ -13,32 +13,34 @@ function plural(n, singular, pluralTexto) {
   return `${formatarInteiro(n)} ${n === 1 ? singular : pluralTexto}`
 }
 
-/** Monta os 4 cartões a partir do retorno de /kpis, só formatando (sem recalcular). */
+/**
+ * Monta os 4 cartões a partir do retorno de GET /pedidos/dashboard/kpis, só formatando (sem recalcular):
+ * { faturamento, quantidadePedidos, variacaoPedidos, ticketMedio, ticketMedioAnterior, clientesAtendidos }.
+ * `variacaoPedidos`, `ticketMedio` e `ticketMedioAnterior` podem vir null.
+ */
 function montarCartoes(dados, rotuloPeriodo) {
-  const faturamento = dados?.faturamento ?? {}
-  const pedidos = dados?.pedidos ?? {}
-  const ticket = dados?.ticketMedio ?? {}
-  const clientes = dados?.clientesAtendidos ?? {}
-
-  const variacao = formatarVariacao(pedidos.variacaoPercentual)
-  const tomVariacao = !ehNumero(pedidos.variacaoPercentual) || Math.round(pedidos.variacaoPercentual) === 0
+  const variacaoPedidos = dados?.variacaoPedidos
+  const variacao = formatarVariacao(variacaoPedidos)
+  const tomVariacao = !ehNumero(variacaoPedidos) || Math.round(variacaoPedidos) === 0
     ? 'neutro'
-    : pedidos.variacaoPercentual > 0 ? 'positivo' : 'negativo'
+    : variacaoPedidos > 0 ? 'positivo' : 'negativo'
 
-  const temTicket = ehNumero(ticket.valor)
+  const ticket = dados?.ticketMedio
+  const ticketAnterior = dados?.ticketMedioAnterior
+  const temTicket = ehNumero(ticket)
 
   return [
     {
       id: 'faturamento',
       icone: 'dinheiro',
       titulo: `Faturamento ${rotuloPeriodo}`,
-      valor: formatarMoeda(faturamento.valor ?? 0),
+      valor: formatarMoeda(dados?.faturamento ?? 0),
     },
     {
       id: 'pedidos',
       icone: 'pedidos',
       titulo: `Pedidos ${rotuloPeriodo}`,
-      valor: plural(pedidos.quantidade ?? 0, 'pedido', 'pedidos'),
+      valor: plural(dados?.quantidadePedidos ?? 0, 'pedido', 'pedidos'),
       apoio: variacao ? `${variacao} vs. ontem` : null,
       tomApoio: tomVariacao,
     },
@@ -46,14 +48,14 @@ function montarCartoes(dados, rotuloPeriodo) {
       id: 'ticket',
       icone: 'voucher',
       titulo: 'Ticket médio',
-      valor: temTicket ? formatarMoeda(ticket.valor) : '—',
-      apoio: temTicket && ehNumero(ticket.valorPeriodoAnterior) ? `Ontem: ${formatarMoeda(ticket.valorPeriodoAnterior)}` : null,
+      valor: temTicket ? formatarMoeda(ticket) : '—',
+      apoio: temTicket && ehNumero(ticketAnterior) ? `Ontem: ${formatarMoeda(ticketAnterior)}` : null,
     },
     {
       id: 'clientes',
       icone: 'clientes',
       titulo: 'Clientes atendidos',
-      valor: plural(clientes.quantidade ?? 0, 'cliente', 'clientes'),
+      valor: plural(dados?.clientesAtendidos ?? 0, 'cliente', 'clientes'),
     },
   ]
 }

@@ -41,6 +41,8 @@
   --status-pronto-bg: #f2ecfd;
   --status-concluido: var(--verde-600);
   --status-concluido-bg: var(--verde-100);
+  --pagar-balcao: #0e7c86;
+  --pagar-balcao-bg: #e8f5f6;
 
   /* Pontos e cancelado */
   --pontos: #e8751a;

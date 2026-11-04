@@ -1,14 +1,13 @@
 import axios from 'axios'
-import { lerToken } from '../services/sessaoService.js'
 
 export const MENSAGEM_GENERICA = 'Não foi possível concluir a operação. Tente novamente.'
 export const MENSAGEM_SEM_CONEXAO = 'Sem conexão com o servidor'
 
 /**
- * Erro de API que preserva o que o ViewModel precisa para decidir (AGENTS.md §3.1):
+ * Erro de API que preserva o que o ViewModel precisa para decidir:
  * - status: código HTTP (undefined quando não houve resposta = sem conexão)
- * - codigo: campo `codigo` do corpo da resposta, quando existir
- * - message: mensagem amigável (a do corpo ou a genérica)
+ * - codigo: propriedade `codigo` do ProblemDetail, quando existir
+ * - message: o `detail` do ProblemDetail ou, se ele vier vazio, a mensagem genérica
  * - cancelado: true quando a requisição foi abortada (AbortController)
  */
 export class ApiError extends Error {
@@ -25,6 +24,10 @@ export function ehCancelamento(erro) {
   return Boolean(erro?.cancelado) || axios.isCancel(erro) || erro?.name === 'AbortError'
 }
 
+function textoOuNulo(valor) {
+  return typeof valor === 'string' && valor.trim() !== '' ? valor.trim() : null
+}
+
 export function paraApiError(erro) {
   if (erro instanceof ApiError) return erro
   if (axios.isCancel(erro)) {
@@ -38,21 +41,14 @@ export function paraApiError(erro) {
   return new ApiError({
     status: resposta.status,
     codigo: corpo.codigo,
-    message: corpo.mensagem || corpo.message || MENSAGEM_GENERICA,
+    message: textoOuNulo(corpo.detail) ?? MENSAGEM_GENERICA,
   })
 }
 
 const httpClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3001',
+  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8080',
   timeout: 15_000,
   headers: { Accept: 'application/json' },
-})
-
-// Envia o token da sessão (quando houver) em toda requisição.
-httpClient.interceptors.request.use((config) => {
-  const token = lerToken()
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  return config
 })
 
 httpClient.interceptors.response.use(

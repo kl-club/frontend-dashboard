@@ -30,7 +30,7 @@ export default function AdminLayout() {
       <Sidebar
         id={ID_MENU}
         aberta={menuAberto}
-        badgePedidos={resumo.totalHistorico}
+        badgePedidos={resumo.emAndamentoHoje}
         onNavegar={() => setMenuAberto(false)}
         onSair={sair}
       />
@@ -53,7 +53,7 @@ export default function AdminLayout() {
           </span>
         </div>
 
-        {emPedidos && <Topbar loja={resumo.loja} />}
+        {emPedidos && <Topbar />}
 
         <main className={styles.conteudo}>
           <Outlet context={{ resumo }} />

@@ -1,3 +1,4 @@
+import { ROTULO_SEM_CADASTRO, STATUS } from '../../../model/constants/pedidos.js'
 import {
   formatarCodigo,
   formatarItem,
@@ -11,41 +12,53 @@ import Icone from '../Icone/Icone.jsx'
 import styles from './CartaoPedido.module.css'
 
 /**
- * Cartão do quadro de pedidos. A coluna (`lista`) define o que aparece:
- * - novos: tempo relativo; novos e emPreparo: valor de cada item;
+ * Cartão do quadro de pedidos (objeto Pedido da API). A coluna (`lista`) define o que aparece:
+ * - novos: tempo relativo e, em PENDENTE (dinheiro), o aviso "Pagar no balcão" e o cartão em azul-petróleo;
+ * - novos e emPreparo: valor de cada item;
  * - concluidos: "Total (PIX):".
+ * Pedido sem cliente: "Sem cadastro" e sem chip de pontos.
  * `acoes` é o rodapé de botões (fornecido pela página).
  */
 export default function CartaoPedido({ pedido, lista, tom, acoes, ocupado = false }) {
   const mostrarValorItem = lista === 'novos' || lista === 'emPreparo'
   const rotuloTotal = lista === 'concluidos' ? `Total (${rotuloPagamentoCurto(pedido.formaPagamento)}):` : 'Total:'
-  const tituloId = `pedido-${pedido.id}-titulo`
+  const tituloId = `pedido-${pedido.idPedido}-titulo`
+  const nomeCliente = pedido.usuario?.nome
+  const pagarNoBalcao = pedido.statusPedido === STATUS.PENDENTE
 
   return (
-    <article className={`${styles.cartao} ${styles[tom] ?? ''}`} aria-labelledby={tituloId} aria-busy={ocupado || undefined}>
+    <article
+      className={`${styles.cartao} ${styles[tom] ?? ''} ${pagarNoBalcao ? styles.pagarNoBalcao : ''}`}
+      aria-labelledby={tituloId}
+      aria-busy={ocupado || undefined}
+    >
       <header className={styles.cabecalho}>
         <h3 id={tituloId} className={`${styles.codigo} tabular`}>
-          {formatarCodigo(pedido.id)}
+          {formatarCodigo(pedido.idPedido)}
         </h3>
-        <Chip tom="pontos">{formatarPontos(pedido.pontosGanhos)}</Chip>
-        {pedido.origem?.identificacao && (
-          <Chip tom="neutro" icone={pedido.origem.tipo === 'TOTEM' ? 'totem' : undefined}>
-            {pedido.origem.identificacao}
+        {nomeCliente && <Chip tom="pontos">{formatarPontos(pedido.pontosGerados)}</Chip>}
+        {pagarNoBalcao && (
+          <Chip tom="laranja" icone="dinheiro">
+            Pagar no balcão
           </Chip>
         )}
         {lista === 'novos' && (
           <span className={styles.tempo}>
             <Icone nome="relogio" tamanho={14} />
-            <time dateTime={pedido.criadoEm}>{tempoRelativo(pedido.criadoEm)}</time>
+            <time dateTime={pedido.dataHora}>{tempoRelativo(pedido.dataHora)}</time>
           </span>
         )}
       </header>
 
-      <p className={styles.cliente}>{pedido.cliente?.nome ?? '—'}</p>
+      {nomeCliente ? (
+        <p className={styles.cliente}>{nomeCliente}</p>
+      ) : (
+        <p className={`${styles.cliente} ${styles.semCadastro}`}>{ROTULO_SEM_CADASTRO}</p>
+      )}
 
       <ul className={styles.itens}>
         {(pedido.itens ?? []).map((item, i) => (
-          <li key={`${item.nome}-${i}`} className={styles.item}>
+          <li key={`${item.idProduto ?? item.nome}-${i}`} className={styles.item}>
             <span>{formatarItem(item)}</span>
             {mostrarValorItem && typeof item.valorTotal === 'number' && (
               <span className={`${styles.valorItem} tabular`}>{formatarMoeda(item.valorTotal)}</span>
@@ -54,9 +67,9 @@ export default function CartaoPedido({ pedido, lista, tom, acoes, ocupado = fals
         ))}
       </ul>
 
-      {pedido.observacao && (
+      {pedido.observacoes && (
         <p className={styles.observacao}>
-          <strong>Obs:</strong> {pedido.observacao}
+          <strong>Obs:</strong> {pedido.observacoes}
         </p>
       )}
 

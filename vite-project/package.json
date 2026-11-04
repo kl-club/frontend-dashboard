@@ -5,9 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "api": "node mock/server.js",
-    "dev:all": "concurrently -k -n api,web -c green,cyan \"npm:api\" \"npm:dev\"",
-    "db:reset": "node mock/banco.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

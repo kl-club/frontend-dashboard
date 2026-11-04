@@ -37,14 +37,15 @@ export default function LoginPage() {
 
           <form className={styles.formulario} onSubmit={vm.enviar} noValidate>
             <CampoFormulario
-              id="usuario"
-              rotulo="Usuário ou E-mail"
+              id="email"
+              rotulo="E-mail"
               icone="usuario"
-              valor={vm.usuario}
-              onChange={vm.alterarUsuario}
-              placeholder="Digite seu usuário ou e-mail"
+              tipo="email"
+              valor={vm.email}
+              onChange={vm.alterarEmail}
+              placeholder="Digite seu e-mail"
               autoComplete="username"
-              invalido={vm.camposInvalidos.usuario}
+              invalido={vm.camposInvalidos.email}
               descritoPor={vm.erro ? ID_ERRO : undefined}
               desabilitado={vm.enviando}
               autoFocus

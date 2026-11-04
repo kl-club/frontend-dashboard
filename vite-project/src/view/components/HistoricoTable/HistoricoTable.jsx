@@ -1,4 +1,4 @@
-import { MODALIDADE, STATUS } from '../../../model/constants/pedidos.js'
+import { MODALIDADE, ROTULO_SEM_CADASTRO, STATUS } from '../../../model/constants/pedidos.js'
 import {
   formatarCodigo,
   formatarDataHora,
@@ -20,7 +20,7 @@ const COLUNAS = ['Pedido', 'Cliente', 'Valor total', 'Itens do pedido', 'Modalid
 
 const TOM_MODALIDADE = {
   [MODALIDADE.RETIRADA]: 'verde',
-  [MODALIDADE.CONSUMO_LOCAL]: 'laranja',
+  [MODALIDADE.LOCAL]: 'laranja',
 }
 
 const ARIA_SORT = { desc: 'descending', asc: 'ascending' }
@@ -32,27 +32,29 @@ const DICA_ORDEM = {
 }
 
 function SegundaLinhaCliente({ pedido }) {
-  if (pedido.status === STATUS.CANCELADO) {
-    return <span className={styles.motivo}>{pedido.motivoCancelamento || 'Cancelado'}</span>
+  if (pedido.statusPedido === STATUS.CANCELADO) {
+    return <span className={styles.motivo}>Cancelado</span>
   }
-  if (pedido.modalidade === MODALIDADE.CONSUMO_LOCAL && pedido.mesa) {
-    return <span className={styles.mesa}>Mesa {pedido.mesa} // Salão</span>
-  }
-  const telefone = formatarTelefone(pedido.cliente?.telefone)
+  const telefone = formatarTelefone(pedido.usuario?.telefone)
   return telefone ? <span className={`${styles.telefone} tabular`}>{telefone}</span> : null
 }
 
+/**
+ * Linha do histórico: `{ idPedido, statusPedido, modalidade, dataHora, usuario, itens,
+ * formaPagamento, valorTotal, pontosGerados }`. `usuario` vem null em pedido sem cliente.
+ */
 function Linha({ pedido }) {
-  const cancelado = pedido.status === STATUS.CANCELADO
+  const cancelado = pedido.statusPedido === STATUS.CANCELADO
   const itens = formatarItens(pedido.itens)
+  const nomeCliente = pedido.usuario?.nome
   return (
     <tr className={`${styles.linha} ${cancelado ? styles.cancelado : ''}`}>
       <td data-rotulo="Pedido" className={`${styles.codigo} tabular`}>
-        {formatarCodigo(pedido.id)}
+        {formatarCodigo(pedido.idPedido)}
       </td>
       <td data-rotulo="Cliente">
         <span className={styles.cliente}>
-          <strong>{pedido.cliente?.nome ?? '—'}</strong>
+          {nomeCliente ? <strong>{nomeCliente}</strong> : <strong className={styles.semCadastro}>{ROTULO_SEM_CADASTRO}</strong>}
           <SegundaLinhaCliente pedido={pedido} />
         </span>
       </td>
@@ -66,7 +68,7 @@ function Linha({ pedido }) {
           ) : (
             <>
               <span className="tabular">{formatarMoeda(pedido.valorTotal)}</span>
-              <Chip tom="pontos">{formatarPontos(pedido.pontosGanhos)}</Chip>
+              {nomeCliente && <Chip tom="pontos">{formatarPontos(pedido.pontosGerados)}</Chip>}
             </>
           )}
         </span>
@@ -80,7 +82,7 @@ function Linha({ pedido }) {
         </Chip>
       </td>
       <td data-rotulo="Data & horário" className={`${styles.data} tabular`}>
-        <time dateTime={pedido.criadoEm}>{formatarDataHora(pedido.criadoEm)}</time>
+        <time dateTime={pedido.dataHora}>{formatarDataHora(pedido.dataHora)}</time>
       </td>
     </tr>
   )
@@ -147,7 +149,7 @@ export default function HistoricoTable({ bloco, ordenacao, onAlternarOrdenacao, 
                     ))}
                   </tr>
                 ))
-              : pedidos.map((p) => <Linha key={p.id} pedido={p} />)}
+              : pedidos.map((p) => <Linha key={p.idPedido} pedido={p} />)}
           </tbody>
         </table>
       </div>

@@ -13,24 +13,24 @@ const TITULO_FALHA = 'Login não realizado'
  */
 export function useLoginViewModel() {
   const navigate = useNavigate()
-  const [usuario, setUsuario] = useState('')
+  const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [mostrarSenha, setMostrarSenha] = useState(false)
   const [enviando, setEnviando] = useState(false)
   const [erro, setErro] = useState(null) // { titulo, mensagem } | null
-  const [camposInvalidos, setCamposInvalidos] = useState({ usuario: false, senha: false })
+  const [camposInvalidos, setCamposInvalidos] = useState({ email: false, senha: false })
   const controle = useRef(null)
 
   useEffect(() => () => controle.current?.abort(), [])
 
   const limparErro = useCallback(() => {
     setErro(null)
-    setCamposInvalidos({ usuario: false, senha: false })
+    setCamposInvalidos({ email: false, senha: false })
   }, [])
 
-  const alterarUsuario = useCallback(
+  const alterarEmail = useCallback(
     (valor) => {
-      setUsuario(valor)
+      setEmail(valor)
       limparErro()
     },
     [limparErro],
@@ -51,10 +51,10 @@ export function useLoginViewModel() {
       evento?.preventDefault()
       if (enviando) return
 
-      const faltaUsuario = usuario.trim() === ''
+      const faltaEmail = email.trim() === ''
       const faltaSenha = senha === ''
-      if (faltaUsuario || faltaSenha) {
-        setCamposInvalidos({ usuario: faltaUsuario, senha: faltaSenha })
+      if (faltaEmail || faltaSenha) {
+        setCamposInvalidos({ email: faltaEmail, senha: faltaSenha })
         setErro({ titulo: 'Preencha os campos', mensagem: MENSAGEM_CAMPOS })
         return
       }
@@ -63,29 +63,29 @@ export function useLoginViewModel() {
       setEnviando(true)
       controle.current = new AbortController()
       try {
-        const sessao = await entrar({ usuario, senha }, controle.current.signal)
-        salvarSessao(sessao)
+        const funcionario = await entrar({ email, senha }, controle.current.signal)
+        salvarSessao(funcionario)
         navigate(ROTA_APOS_LOGIN, { replace: true })
       } catch (falha) {
         if (ehCancelamento(falha)) return
         setSenha('')
-        setCamposInvalidos({ usuario: falha.status === 401, senha: falha.status === 401 })
+        setCamposInvalidos({ email: falha.status === 401, senha: falha.status === 401 })
         setErro({ titulo: TITULO_FALHA, mensagem: falha.status === 401 ? MENSAGEM_CREDENCIAIS : falha.message })
       } finally {
         setEnviando(false)
       }
     },
-    [enviando, usuario, senha, limparErro, navigate],
+    [enviando, email, senha, limparErro, navigate],
   )
 
   return {
-    usuario,
+    email,
     senha,
     mostrarSenha,
     enviando,
     erro,
     camposInvalidos,
-    alterarUsuario,
+    alterarEmail,
     alterarSenha,
     alternarSenha,
     enviar,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { formatarCodigo } from '../../../model/entities/pedido.js'
+import { STATUS } from '../../../model/constants/pedidos.js'
+import { formatarCodigo, formatarMoeda } from '../../../model/entities/pedido.js'
 import { useGestaoPedidosViewModel } from '../../../viewmodel/useGestaoPedidosViewModel.js'
 import Aviso from '../../components/Aviso/Aviso.jsx'
 import BotaoAcao from '../../components/BotaoAcao/BotaoAcao.jsx'
@@ -12,52 +13,68 @@ import styles from './PedidosPage.module.css'
 
 export default function PedidosHojeTab() {
   const vm = useGestaoPedidosViewModel()
-  const informarTotalHoje = useOutletContext()?.resumo?.informarTotalHoje
-  const [aRecusar, setARecusar] = useState(null)
+  const informarHoje = useOutletContext()?.resumo?.informarHoje
+  const [aRecusar, setARecusar] = useState(null) // idPedido | null
+  const [aReceber, setAReceber] = useState(null) // { idPedido, valorTotal } | null
 
-  // O selo da aba usa a soma das listas assim que o quadro carrega.
+  // Os selos (aba e menu) usam as contagens do quadro assim que ele carrega ou muda.
   useEffect(() => {
-    if (vm.totalHoje != null) informarTotalHoje?.(vm.totalHoje)
-  }, [vm.totalHoje, informarTotalHoje])
+    if (vm.totalHoje != null) informarHoje?.({ total: vm.totalHoje, emAndamento: vm.emAndamentoHoje })
+  }, [vm.totalHoje, vm.emAndamentoHoje, informarHoje])
 
   const ocupado = vm.acaoEmAndamento !== null
 
   function renderAcoes(lista, pedido) {
-    const esteCartao = vm.acaoEmAndamento === pedido.id
+    const id = pedido.idPedido
+    const esteCartao = vm.acaoEmAndamento === id
     const carregando = (tipo) => esteCartao && vm.tipoAcaoEmAndamento === tipo
     const desabilitado = ocupado && !esteCartao
-    const codigo = formatarCodigo(pedido.id)
+    const codigo = formatarCodigo(id)
 
     switch (lista) {
-      case 'novos':
+      case 'novos': {
+        // PENDENTE = pagamento em dinheiro no balcão: aceitar significa receber o pagamento.
+        const pendente = pedido.statusPedido === STATUS.PENDENTE
         return (
           <>
             <BotaoAcao
               variante="perigo"
               carregando={carregando('recusar')}
               desabilitado={desabilitado || esteCartao}
-              onClick={() => setARecusar(pedido.id)}
+              onClick={() => setARecusar(id)}
               aria-label={`Recusar pedido ${codigo}`}
             >
               Recusar
             </BotaoAcao>
-            <BotaoAcao
-              carregando={carregando('aceitar')}
-              desabilitado={desabilitado || esteCartao}
-              onClick={() => vm.aceitar(pedido.id)}
-              aria-label={`Aceitar pedido ${codigo}`}
-            >
-              Aceitar
-            </BotaoAcao>
+            {pendente ? (
+              <BotaoAcao
+                carregando={carregando('receber')}
+                desabilitado={desabilitado || esteCartao}
+                onClick={() => setAReceber({ idPedido: id, valorTotal: pedido.valorTotal })}
+                aria-label={`Receber o pagamento e aceitar o pedido ${codigo}`}
+              >
+                Receber e aceitar
+              </BotaoAcao>
+            ) : (
+              <BotaoAcao
+                carregando={carregando('aceitar')}
+                desabilitado={desabilitado || esteCartao}
+                onClick={() => vm.aceitar(id)}
+                aria-label={`Aceitar pedido ${codigo}`}
+              >
+                Aceitar
+              </BotaoAcao>
+            )}
           </>
         )
+      }
       case 'emPreparo':
         return (
           <BotaoAcao
             variante="primario"
             carregando={esteCartao}
             desabilitado={desabilitado}
-            onClick={() => vm.marcarPronto(pedido.id)}
+            onClick={() => vm.marcarPronto(id)}
             aria-label={`Marcar pedido ${codigo} como pronto`}
           >
             Marcar como Pronto
@@ -69,7 +86,7 @@ export default function PedidosHojeTab() {
             variante="primario"
             carregando={esteCartao}
             desabilitado={desabilitado}
-            onClick={() => vm.marcarFeito(pedido.id)}
+            onClick={() => vm.marcarFeito(id)}
             aria-label={`Marcar pedido ${codigo} como feito`}
           >
             Marcar como Feito
@@ -84,6 +101,12 @@ export default function PedidosHojeTab() {
     const id = aRecusar
     setARecusar(null)
     if (id != null) vm.recusar(id)
+  }
+
+  function confirmarRecebimento() {
+    const pedido = aReceber
+    setAReceber(null)
+    if (pedido != null) vm.receber(pedido.idPedido)
   }
 
   return (
@@ -111,6 +134,20 @@ export default function PedidosHojeTab() {
         perigo
         onConfirmar={confirmarRecusa}
         onCancelar={() => setARecusar(null)}
+      />
+
+      <DialogoConfirmacao
+        aberto={aReceber !== null}
+        titulo="Receber pagamento"
+        mensagem={
+          aReceber !== null
+            ? `Confirmar o recebimento de ${formatarMoeda(aReceber.valorTotal)} do pedido ${formatarCodigo(aReceber.idPedido)}?`
+            : ''
+        }
+        rotuloConfirmar="Confirmar recebimento"
+        rotuloCancelar="Voltar"
+        onConfirmar={confirmarRecebimento}
+        onCancelar={() => setAReceber(null)}
       />
 
       <Aviso aviso={vm.aviso} onFechar={vm.fecharAviso} />

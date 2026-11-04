@@ -1,4 +1,4 @@
-// Abas de período do dashboard (AGENTS.md §6.2).
+// Abas de período do dashboard. A API só aceita HOJE por enquanto.
 // Na próxima sprint basta trocar `habilitado` para liberar uma aba.
 
 export const PERIODOS = Object.freeze([

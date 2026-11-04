@@ -13,5 +13,5 @@ export function useSessaoViewModel() {
     navigate(ROTA_LOGIN, { replace: true })
   }, [navigate])
 
-  return { autenticado: Boolean(sessao), usuario: sessao?.usuario ?? null, sair }
+  return { autenticado: Boolean(sessao), funcionario: sessao?.funcionario ?? null, sair }
 }

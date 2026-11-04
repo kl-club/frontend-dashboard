@@ -1,4 +1,4 @@
-// Funções puras de formatação e rótulos do Pedido (AGENTS.md §8).
+// Funções puras de formatação e rótulos do Pedido.
 // Não conhecem React nem HTTP: recebem dados e devolvem texto.
 
 import {
@@ -60,11 +60,24 @@ export function formatarItem(item) {
   return `${quantidade}× ${item?.nome ?? ''}`.trim()
 }
 
+// A API devolve datas sem fuso ("2026-11-02T14:07:00"), sempre no horário de São Paulo.
+// São Paulo não tem horário de verão desde 2019, então o deslocamento é fixo.
+const DESLOCAMENTO_SAO_PAULO = '-03:00'
+const TEM_FUSO = /(Z|[+-]\d{2}:?\d{2})$/i
+
+/** Converte a data da API em Date, tratando datas sem fuso como horário de São Paulo. */
+export function lerDataApi(iso) {
+  if (!iso) return null
+  const texto = String(iso)
+  const comFuso = texto.includes('T') && !TEM_FUSO.test(texto) ? `${texto}${DESLOCAMENTO_SAO_PAULO}` : texto
+  const data = new Date(comFuso)
+  return Number.isNaN(data.getTime()) ? null : data
+}
+
 /** ISO → "02/11/2026 14:05" no fuso de São Paulo. */
 export function formatarDataHora(iso) {
-  if (!iso) return TRACO
-  const data = new Date(iso)
-  if (Number.isNaN(data.getTime())) return TRACO
+  const data = lerDataApi(iso)
+  if (!data) return TRACO
   const partes = Object.fromEntries(dataHora.formatToParts(data).map((p) => [p.type, p.value]))
   return `${partes.day}/${partes.month}/${partes.year} ${partes.hour}:${partes.minute}`
 }
@@ -80,9 +93,9 @@ export function formatarTelefone(telefone) {
 
 /** Tempo desde `iso`: "Agora", "Há 1 min", "Há 2 h", "Há 3 dias". */
 export function tempoRelativo(iso, agora = Date.now()) {
-  if (!iso) return ''
-  const instante = new Date(iso).getTime()
-  if (Number.isNaN(instante)) return ''
+  const data = lerDataApi(iso)
+  if (!data) return ''
+  const instante = data.getTime()
   const minutos = Math.max(0, Math.floor((agora - instante) / 60_000))
   if (minutos < 1) return 'Agora'
   if (minutos < 60) return `Há ${minutos} min`
@@ -92,7 +105,7 @@ export function tempoRelativo(iso, agora = Date.now()) {
   return dias === 1 ? 'Há 1 dia' : `Há ${dias} dias`
 }
 
-/** "RETIRADA" → "Retirada Balcão"; "CONSUMO_LOCAL" → "Consumo Local". Valor desconhecido: o código bruto. */
+/** "RETIRADA" → "Retirada Balcão"; "LOCAL" → "Consumo Local". Valor desconhecido: o código bruto. */
 export function rotuloModalidade(modalidade) {
   return ROTULO_MODALIDADE[modalidade] ?? modalidade ?? TRACO
 }
@@ -102,12 +115,12 @@ export function rotuloPagamento(forma) {
   return ROTULO_PAGAMENTO[forma] ?? forma ?? TRACO
 }
 
-/** "PIX" → "PIX"; "CARTAO_CREDITO" → "Crédito". */
+/** "PIX" → "PIX"; "CREDITO" → "Crédito". */
 export function rotuloPagamentoCurto(forma) {
   return ROTULO_PAGAMENTO_CURTO[forma] ?? forma ?? TRACO
 }
 
-/** "CARTAO" → "Cartão de Crédito / Débito". */
+/** "CREDITO" → "Cartão de Crédito". */
 export function rotuloFormaDistribuicao(forma) {
   return ROTULO_FORMA_DISTRIBUICAO[forma] ?? forma ?? TRACO
 }
@@ -125,10 +138,13 @@ export function formatarPercentual(percentual) {
   return ehNumero(percentual) ? `${Math.round(percentual)}%` : TRACO
 }
 
-/** Texto de busca → parâmetro do histórico: dígitos (com # opcional) viram `codigo`. */
+/**
+ * Texto de busca → parâmetro do histórico: dígitos (com # opcional) viram `idPedido`;
+ * o resto vira `nomeUsuario`. O id segue como texto para a API validar números fora do limite.
+ */
 export function interpretarBusca(texto) {
   const limpo = (texto ?? '').trim()
   if (!limpo) return {}
   const codigo = limpo.match(/^#?\s*(\d+)$/)
-  return codigo ? { codigo: Number(codigo[1]) } : { cliente: limpo }
+  return codigo ? { idPedido: codigo[1] } : { nomeUsuario: limpo }
 }

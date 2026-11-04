@@ -34,8 +34,12 @@ export default function Sidebar({ id, aberta, badgePedidos, onNavegar, onSair })
             <NavLink to="/pedidos" className={classeLink} title="Pedidos" onClick={onNavegar}>
               <Icone nome="pedidos" tamanho={20} />
               <span className={styles.rotulo}>Pedidos</span>
-              {badgePedidos != null && (
-                <span className={`${styles.badge} tabular`} aria-label={`${badgePedidos} pedidos no histórico`}>
+              {badgePedidos > 0 && (
+                <span
+                  className={`${styles.badge} tabular`}
+                  aria-label={`${badgePedidos} pedidos de hoje em andamento`}
+                  title="Pedidos de hoje ainda não concluídos"
+                >
                   {badgePedidos}
                 </span>
               )}

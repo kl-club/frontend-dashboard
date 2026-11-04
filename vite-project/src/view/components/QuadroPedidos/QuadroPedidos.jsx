@@ -41,11 +41,11 @@ function Coluna({ definicao, bloco, ativa, renderAcoes, acaoEmAndamento, onTenta
         {bloco.status === 'success' &&
           pedidos.map((pedido) => (
             <CartaoPedido
-              key={pedido.id}
+              key={pedido.idPedido}
               pedido={pedido}
               lista={definicao.chave}
               tom={definicao.tom}
-              ocupado={acaoEmAndamento === pedido.id}
+              ocupado={acaoEmAndamento === pedido.idPedido}
               acoes={renderAcoes?.(definicao.chave, pedido)}
             />
           ))}

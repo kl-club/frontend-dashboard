@@ -1,6 +1,6 @@
 import httpClient from '../api/httpClient.js'
 
-// Dashboard (AGENTS.md §5.1). Todas as chamadas enviam `periodo`.
+// Dashboard (GET /pedidos/dashboard/*). Todas as chamadas enviam `periodo` (a API só aceita HOJE).
 
 export async function buscarKpis({ periodo }, signal) {
   const { data } = await httpClient.get('/pedidos/dashboard/kpis', { params: { periodo }, signal })

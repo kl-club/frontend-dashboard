@@ -110,10 +110,9 @@ th[aria-sort='descending'] .ordenar {
   font-size: 13px;
 }
 
-.mesa {
-  color: #c25e0c;
-  font-size: 13px;
-  font-weight: 600;
+.semCadastro {
+  font-weight: 500;
+  color: var(--texto-fraco);
 }
 
 .motivo {

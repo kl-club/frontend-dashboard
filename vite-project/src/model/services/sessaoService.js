@@ -1,11 +1,14 @@
 // Sessão do funcionário. Fica em sessionStorage (encerra ao fechar a aba) e cai para a memória
 // quando o storage não está disponível (modo privado, bloqueio de dados do site).
+// A API não gera token: a sessão só guarda o funcionário devolvido pelo login, e a proteção
+// das telas é feita pelo front (RotaProtegida).
 
 const CHAVE = 'klclub.sessao'
 let emMemoria = null
 
 function valida(sessao) {
-  return Boolean(sessao) && typeof sessao.token === 'string' && sessao.token !== '' && typeof sessao.usuario === 'object'
+  const funcionario = sessao?.funcionario
+  return Boolean(funcionario) && typeof funcionario === 'object' && funcionario.idFuncionario != null
 }
 
 export function lerSessao() {
@@ -21,7 +24,9 @@ export function lerSessao() {
   return valida(emMemoria) ? emMemoria : null
 }
 
-export function salvarSessao(sessao) {
+/** Grava a sessão a partir da resposta do login: { idFuncionario, nome, email, nivel, ativo }. */
+export function salvarSessao(funcionario) {
+  const sessao = { funcionario }
   emMemoria = sessao
   try {
     window.sessionStorage.setItem(CHAVE, JSON.stringify(sessao))
@@ -37,8 +42,4 @@ export function limparSessao() {
   } catch {
     // nada a limpar
   }
-}
-
-export function lerToken() {
-  return lerSessao()?.token ?? null
 }

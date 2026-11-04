@@ -4,12 +4,14 @@ import { INTERVALO_ATUALIZACAO_MS, listaDoStatus } from '../model/constants/pedi
 import { formatarCodigo } from '../model/entities/pedido.js'
 import * as gestaoService from '../model/services/gestaoPedidosService.js'
 import { estadoDoBloco, useBloco } from './useBloco.js'
+import { contarHoje } from './useResumoPedidosViewModel.js'
 import { usePolling } from './usePolling.js'
 
 export const MENSAGEM_CONFLITO = 'Este pedido já foi atualizado por outra pessoa. A lista foi atualizada.'
 
 const SUCESSO = {
   aceitar: (id) => `Pedido ${formatarCodigo(id)} aceito e enviado para o preparo.`,
+  receber: (id) => `Pagamento recebido. Pedido ${formatarCodigo(id)} enviado para o preparo.`,
   marcarPronto: (id) => `Pedido ${formatarCodigo(id)} pronto para retirada.`,
   marcarFeito: (id) => `Pedido ${formatarCodigo(id)} concluído.`,
   recusar: (id) => `Pedido ${formatarCodigo(id)} recusado.`,
@@ -65,10 +67,10 @@ export function useGestaoPedidosViewModel() {
   const mover = useCallback(
     (id, atualizado) => {
       const definidores = { novos: dNovos, emPreparo: dPreparo, prontos: dProntos, concluidos: dConcluidos }
-      const destino = listaDoStatus(atualizado?.status)
+      const destino = listaDoStatus(atualizado?.statusPedido)
       for (const [chave, definir] of Object.entries(definidores)) {
         definir((lista) => {
-          const semPedido = (lista ?? []).filter((p) => p.id !== id)
+          const semPedido = (lista ?? []).filter((p) => p.idPedido !== id)
           return chave === destino ? [...semPedido, atualizado] : semPedido
         })
       }
@@ -107,6 +109,8 @@ export function useGestaoPedidosViewModel() {
   )
 
   const aceitar = useCallback((id) => executar('aceitar', id, gestaoService.avancar), [executar])
+  /** PENDENTE (dinheiro): o funcionário recebeu no balcão; avança como o aceitar. A confirmação é da View. */
+  const receber = useCallback((id) => executar('receber', id, gestaoService.avancar), [executar])
   const marcarPronto = useCallback((id) => executar('marcarPronto', id, gestaoService.avancar), [executar])
   const marcarFeito = useCallback((id) => executar('marcarFeito', id, gestaoService.avancar), [executar])
   /** A confirmação ("Recusar o pedido…?") é responsabilidade da View. */
@@ -120,18 +124,26 @@ export function useGestaoPedidosViewModel() {
     concluidos: estadoDoBloco(concluidos),
   }
 
-  // Selo da aba: soma dos tamanhos das 4 listas (null até todas carregarem).
+  // Selos: aba = soma das 4 listas; menu = só as que pedem ação (null até todas carregarem).
   const blocos = [novos, emPreparo, prontos, concluidos]
-  const totalHoje = blocos.every((b) => b.status === 'success')
-    ? blocos.reduce((soma, b) => soma + b.data.length, 0)
+  const carregadas = blocos.every((b) => b.status === 'success')
+  const contagens = carregadas
+    ? contarHoje({
+        novos: novos.data.length,
+        emPreparo: emPreparo.data.length,
+        prontos: prontos.data.length,
+        concluidos: concluidos.data.length,
+      })
     : null
 
   return {
     listas,
-    totalHoje,
+    totalHoje: contagens?.total ?? null,
+    emAndamentoHoje: contagens?.emAndamento ?? null,
     acaoEmAndamento: acao?.id ?? null,
     tipoAcaoEmAndamento: acao?.tipo ?? null,
     aceitar,
+    receber,
     marcarPronto,
     marcarFeito,
     recusar,

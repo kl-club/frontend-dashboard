@@ -1,7 +1,7 @@
 import httpClient from '../api/httpClient.js'
 import { LISTAS_GESTAO } from '../constants/pedidos.js'
 
-// Gestão de pedidos de hoje (AGENTS.md §5.2).
+// Gestão de pedidos de hoje (GET /pedidos/gestao/*, PATCH /pedidos/{id}/avancar e /cancelar).
 
 /** Lista do quadro pela chave (`novos`, `emPreparo`, `prontos`, `concluidos`). Array de Pedido. */
 export async function buscarLista(chave, signal) {
