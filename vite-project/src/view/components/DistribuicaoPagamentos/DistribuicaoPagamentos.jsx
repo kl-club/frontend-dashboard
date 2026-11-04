@@ -4,20 +4,21 @@ import EstadoBloco from '../EstadoBloco/EstadoBloco.jsx'
 import Painel from '../Painel/Painel.jsx'
 import styles from './DistribuicaoPagamentos.module.css'
 
-const TOM = { PIX: 'pix', CARTAO: 'cartao', DINHEIRO: 'dinheiro', VOUCHER: 'voucher' }
+const TOM = { PIX: 'pix', CREDITO: 'credito', DEBITO: 'debito', DINHEIRO: 'dinheiro', VOUCHER: 'voucher' }
 
+/** Uma barra por forma de pagamento: `{ formaPagamento, valorTotal, percentual }` da API. */
 function Barra({ item }) {
-  const rotulo = rotuloFormaDistribuicao(item.forma)
+  const rotulo = rotuloFormaDistribuicao(item.formaPagamento)
   const percentual = Math.min(100, Math.max(0, Number(item.percentual) || 0))
   return (
-    <li className={`${styles.item} ${styles[TOM[item.forma]] ?? styles.outro}`}>
+    <li className={`${styles.item} ${styles[TOM[item.formaPagamento]] ?? styles.outro}`}>
       <div className={styles.linha}>
         <span className={styles.rotulo}>
           <span className={styles.bolinha} aria-hidden="true" />
           {rotulo}
         </span>
         <span className={`${styles.numeros} tabular`}>
-          <strong>{formatarPercentual(item.percentual)}</strong> ({formatarMoeda(item.valor)})
+          <strong>{formatarPercentual(item.percentual)}</strong> ({formatarMoeda(item.valorTotal)})
         </span>
       </div>
       <div
@@ -27,7 +28,7 @@ function Barra({ item }) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percentual}
-        aria-valuetext={`${formatarPercentual(item.percentual)}, ${formatarMoeda(item.valor)}`}
+        aria-valuetext={`${formatarPercentual(item.percentual)}, ${formatarMoeda(item.valorTotal)}`}
       >
         <span className={styles.barra} style={{ width: `${percentual}%` }} />
       </div>
@@ -36,7 +37,7 @@ function Barra({ item }) {
 }
 
 export default function DistribuicaoPagamentos({ bloco, onTentarNovamente }) {
-  const itens = bloco.data?.itens ?? []
+  const itens = bloco.data?.formasPagamento ?? []
   return (
     <Painel titulo="Distribuição de Pagamentos" icone="grafico" ocupado={bloco.status === 'loading'}>
       <div className={styles.corpo}>
@@ -59,7 +60,7 @@ export default function DistribuicaoPagamentos({ bloco, onTentarNovamente }) {
           ) : (
             <ul className={styles.lista}>
               {itens.map((item) => (
-                <Barra key={item.forma} item={item} />
+                <Barra key={item.formaPagamento} item={item} />
               ))}
             </ul>
           ))}

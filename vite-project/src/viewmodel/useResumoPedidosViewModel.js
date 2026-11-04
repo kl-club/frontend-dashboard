@@ -1,55 +1,63 @@
 import { useCallback, useEffect, useState } from 'react'
 import { INTERVALO_ATUALIZACAO_MS, LISTAS_GESTAO } from '../model/constants/pedidos.js'
-import { buscarConfiguracoes } from '../model/services/configuracoesService.js'
 import { buscarLista } from '../model/services/gestaoPedidosService.js'
 import { buscarTotal } from '../model/services/historicoPedidosService.js'
 import { useBloco } from './useBloco.js'
 import { usePolling } from './usePolling.js'
 
+/** Listas do quadro que ainda pedem ação (todas menos Concluídos). */
+const LISTAS_EM_ANDAMENTO = LISTAS_GESTAO.filter((l) => l.chave !== 'concluidos').map((l) => l.chave)
+
+/** Contagens de hoje a partir das listas da gestão: `{ total, emAndamento }`. */
+export function contarHoje(tamanhos) {
+  const total = Object.values(tamanhos).reduce((soma, n) => soma + n, 0)
+  const emAndamento = LISTAS_EM_ANDAMENTO.reduce((soma, chave) => soma + (tamanhos[chave] ?? 0), 0)
+  return { total, emAndamento }
+}
+
 /**
- * Dados do layout: loja (barra superior) e os selos de Pedidos
- * (menu = total do histórico; abas = total de hoje e do histórico).
+ * Dados do layout: os selos de Pedidos.
+ * - menu: pedidos de hoje ainda não concluídos (Novos + Em Preparo + Prontos);
+ * - aba Pedidos de Hoje: soma das 4 listas; aba Histórico: total do histórico.
  */
 export function useResumoPedidosViewModel() {
-  const loja = useBloco(async (signal) => (await buscarConfiguracoes(signal)).loja ?? null)
   const totalHistorico = useBloco((signal) => buscarTotal(signal))
-  const totalHoje = useBloco(async (signal) => {
+  const hoje = useBloco(async (signal) => {
     const listas = await Promise.all(LISTAS_GESTAO.map((l) => buscarLista(l.chave, signal)))
-    return listas.reduce((soma, lista) => soma + lista.length, 0)
+    return contarHoje(Object.fromEntries(LISTAS_GESTAO.map((l, i) => [l.chave, listas[i].length])))
   })
 
-  const { carregar: cLoja } = loja
   const { carregar: cHistorico } = totalHistorico
-  const { carregar: cHoje, definirDados: definirHoje } = totalHoje
-  const [totalHojeInformado, setTotalHojeInformado] = useState(null)
+  const { carregar: cHoje, definirDados: definirHoje } = hoje
+  const [hojeInformado, setHojeInformado] = useState(null)
 
   useEffect(() => {
-    cLoja()
     cHistorico()
     cHoje()
-  }, [cLoja, cHistorico, cHoje])
+  }, [cHistorico, cHoje])
 
   usePolling(
     (signal) => Promise.all([cHistorico({ silencioso: true, signal }), cHoje({ silencioso: true, signal })]),
     INTERVALO_ATUALIZACAO_MS,
   )
 
-  /** O quadro informa a soma das listas quando a tem, para o selo não esperar o próximo ciclo. */
-  const informarTotalHoje = useCallback(
-    (n) => {
-      setTotalHojeInformado(n)
-      definirHoje(() => n)
+  /** O quadro informa as contagens `{ total, emAndamento }` quando as tem, para os selos não esperarem o próximo ciclo. */
+  const informarHoje = useCallback(
+    (contagens) => {
+      setHojeInformado(contagens)
+      definirHoje(() => contagens)
     },
     [definirHoje],
   )
 
   const recarregar = useCallback(() => Promise.all([cHistorico(), cHoje()]), [cHistorico, cHoje])
+  const contagensHoje = hoje.status === 'success' ? hoje.data : hojeInformado
 
   return {
-    loja: loja.data,
     totalHistorico: totalHistorico.status === 'success' ? totalHistorico.data : null,
-    totalHoje: totalHoje.status === 'success' ? totalHoje.data : totalHojeInformado,
-    informarTotalHoje,
+    totalHoje: contagensHoje?.total ?? null,
+    emAndamentoHoje: contagensHoje?.emAndamento ?? null,
+    informarHoje,
     recarregar,
   }
 }

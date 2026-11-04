@@ -76,8 +76,12 @@
   --cor-forma: #1f7a4c;
 }
 
-.cartao {
+.credito {
   --cor-forma: #2c322d;
+}
+
+.debito {
+  --cor-forma: #6b746f;
 }
 
 .dinheiro {

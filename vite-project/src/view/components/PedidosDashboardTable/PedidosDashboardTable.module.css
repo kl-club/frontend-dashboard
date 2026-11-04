@@ -66,6 +66,15 @@
   white-space: nowrap;
 }
 
+.semCadastro {
+  font-weight: 500;
+  color: var(--texto-fraco);
+}
+
+.semPontos {
+  color: var(--texto-fraco);
+}
+
 .itens {
   color: var(--texto-suave);
 }

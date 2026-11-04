@@ -3,8 +3,8 @@ import Chip from '../Chip/Chip.jsx'
 
 const ICONE = {
   PIX: 'pix',
-  CARTAO_CREDITO: 'cartao',
-  CARTAO_DEBITO: 'cartao',
+  CREDITO: 'cartao',
+  DEBITO: 'cartao',
   DINHEIRO: 'dinheiro',
   VOUCHER: 'voucher',
 }

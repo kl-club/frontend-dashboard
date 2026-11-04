@@ -5,7 +5,7 @@ const INICIAL = Object.freeze({ status: 'loading', data: null, error: null, reca
 
 /**
  * Um bloco de dados `{ status, data, error }` com status em loading | success | error
- * (AGENTS.md §8). `recarregando` indica uma recarga com dados antigos ainda na tela.
+ * `recarregando` indica uma recarga com dados antigos ainda na tela.
  *
  * - `carregar()` mostra carregamento (esqueleto) se ainda não há dados;
  * - `carregar({ silencioso: true })` é a recarga automática: mantém os dados antigos

@@ -1,22 +1,23 @@
 import httpClient from '../api/httpClient.js'
 
-// Histórico de pedidos (AGENTS.md §5.3). Devolve o envelope de paginação.
+// Histórico de pedidos (GET /pedidos/historico). Devolve o envelope de paginação
+// { conteudo, pagina, tamanho, total, totalPaginas }.
 
 /**
  * @param {object} filtros
- * @param {number} [filtros.codigo]
- * @param {string} [filtros.cliente]
+ * @param {string|number} [filtros.idPedido] busca exata pelo código
+ * @param {string} [filtros.nomeUsuario] busca parcial pelo nome do cliente
  * @param {string} [filtros.dataInicio] AAAA-MM-DD
  * @param {string} [filtros.dataFim] AAAA-MM-DD
- * @param {string} [filtros.modalidade] RETIRADA | CONSUMO_LOCAL
+ * @param {string} [filtros.modalidade] RETIRADA | LOCAL
  * @param {'asc'|'desc'|null} [filtros.direcao] ordenação por valor; null = mais recentes primeiro
  * @param {number} filtros.pagina
  * @param {number} filtros.tamanho
  */
-export async function buscar({ codigo, cliente, dataInicio, dataFim, modalidade, direcao, pagina, tamanho }, signal) {
+export async function buscar({ idPedido, nomeUsuario, dataInicio, dataFim, modalidade, direcao, pagina, tamanho }, signal) {
   const params = { pagina, tamanho }
-  if (codigo != null) params.codigo = codigo
-  if (cliente) params.cliente = cliente
+  if (idPedido != null && idPedido !== '') params.idPedido = idPedido
+  if (nomeUsuario) params.nomeUsuario = nomeUsuario
   if (dataInicio) params.dataInicio = dataInicio
   if (dataFim) params.dataFim = dataFim
   if (modalidade) params.modalidade = modalidade

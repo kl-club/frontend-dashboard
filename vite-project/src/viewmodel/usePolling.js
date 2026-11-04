@@ -5,7 +5,7 @@ function paginaVisivel() {
 }
 
 /**
- * Chama `funcao(signal)` a cada `intervaloMs` (AGENTS.md §8):
+ * Chama `funcao(signal)` a cada `intervaloMs`:
  * - a próxima chamada só é agendada depois que a anterior termina (sem sobreposição);
  * - pausa quando `ativo` é false ou quando a aba do navegador está oculta;
  *   ao voltar a ficar visível, atualiza na hora;

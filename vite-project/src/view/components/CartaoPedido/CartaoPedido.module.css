@@ -23,6 +23,16 @@
   --cor: var(--status-concluido);
 }
 
+/* Pedido PENDENTE (dinheiro, ainda não pago no balcão): destaca do resto da coluna Novos. */
+.pagarNoBalcao {
+  --cor: var(--pagar-balcao);
+  background: var(--pagar-balcao-bg);
+  /* Só os outros três lados: a borda esquerda continua com `--cor` (definida em .cartao). */
+  border-top-color: color-mix(in srgb, var(--pagar-balcao) 25%, var(--borda));
+  border-right-color: color-mix(in srgb, var(--pagar-balcao) 25%, var(--borda));
+  border-bottom-color: color-mix(in srgb, var(--pagar-balcao) 25%, var(--borda));
+}
+
 .cabecalho {
   display: flex;
   align-items: center;
@@ -49,6 +59,11 @@
 
 .cliente {
   font-weight: 700;
+}
+
+.semCadastro {
+  font-weight: 500;
+  color: var(--texto-fraco);
 }
 
 .itens {

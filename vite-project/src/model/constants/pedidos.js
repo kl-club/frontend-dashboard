@@ -1,4 +1,4 @@
-// Enumerações do recurso /pedidos (AGENTS.md §4.2).
+// Enumerações do recurso /pedidos, com os mesmos valores da API.
 
 export const STATUS = Object.freeze({
   PENDENTE: 'PENDENTE',
@@ -11,33 +11,33 @@ export const STATUS = Object.freeze({
 
 export const MODALIDADE = Object.freeze({
   RETIRADA: 'RETIRADA',
-  CONSUMO_LOCAL: 'CONSUMO_LOCAL',
+  LOCAL: 'LOCAL',
 })
 
 export const ROTULO_MODALIDADE = Object.freeze({
   RETIRADA: 'Retirada Balcão',
-  CONSUMO_LOCAL: 'Consumo Local',
+  LOCAL: 'Consumo Local',
 })
 
-/** Modalidades aceitas no filtro do histórico (só as da spec). */
+/** Modalidades aceitas no filtro do histórico. */
 export const MODALIDADES_FILTRO = Object.freeze([
   { valor: '', rotulo: 'Todas' },
   { valor: MODALIDADE.RETIRADA, rotulo: 'Retirada' },
-  { valor: MODALIDADE.CONSUMO_LOCAL, rotulo: 'Consumo no local' },
+  { valor: MODALIDADE.LOCAL, rotulo: 'Consumo no local' },
 ])
 
 export const FORMA_PAGAMENTO = Object.freeze({
   PIX: 'PIX',
-  CARTAO_CREDITO: 'CARTAO_CREDITO',
-  CARTAO_DEBITO: 'CARTAO_DEBITO',
+  CREDITO: 'CREDITO',
+  DEBITO: 'DEBITO',
   DINHEIRO: 'DINHEIRO',
   VOUCHER: 'VOUCHER',
 })
 
 export const ROTULO_PAGAMENTO = Object.freeze({
   PIX: 'PIX Instantâneo',
-  CARTAO_CREDITO: 'Cartão de Crédito',
-  CARTAO_DEBITO: 'Cartão de Débito',
+  CREDITO: 'Cartão de Crédito',
+  DEBITO: 'Cartão de Débito',
   DINHEIRO: 'Dinheiro',
   VOUCHER: 'Voucher',
 })
@@ -45,21 +45,25 @@ export const ROTULO_PAGAMENTO = Object.freeze({
 /** Rótulo curto, usado em "Total (PIX):". */
 export const ROTULO_PAGAMENTO_CURTO = Object.freeze({
   PIX: 'PIX',
-  CARTAO_CREDITO: 'Crédito',
-  CARTAO_DEBITO: 'Débito',
+  CREDITO: 'Crédito',
+  DEBITO: 'Débito',
   DINHEIRO: 'Dinheiro',
   VOUCHER: 'Voucher',
 })
 
-/** Formas agrupadas na distribuição de pagamentos do dashboard. */
+/** Rótulos da distribuição de pagamentos do dashboard (crédito e débito separados, como na API). */
 export const ROTULO_FORMA_DISTRIBUICAO = Object.freeze({
   PIX: 'PIX (Instantâneo)',
-  CARTAO: 'Cartão de Crédito / Débito',
+  CREDITO: 'Cartão de Crédito',
+  DEBITO: 'Cartão de Débito',
   DINHEIRO: 'Dinheiro (Espécie)',
   VOUCHER: 'VR / Refeição / Vouchers',
 })
 
-/** Listas do quadro de gestão (§5.2), na ordem das colunas. */
+/** Texto exibido no lugar do nome em pedido sem cliente (feito sem identificação no totem). */
+export const ROTULO_SEM_CADASTRO = 'Sem cadastro'
+
+/** Listas do quadro de gestão (GET /pedidos/gestao/*), na ordem das colunas. */
 export const LISTAS_GESTAO = Object.freeze([
   {
     chave: 'novos',

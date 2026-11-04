@@ -1,4 +1,4 @@
-import { STATUS } from '../../../model/constants/pedidos.js'
+import { ROTULO_SEM_CADASTRO, STATUS } from '../../../model/constants/pedidos.js'
 import {
   formatarCodigo,
   formatarInteiro,
@@ -28,16 +28,18 @@ function LinhasEsqueleto({ quantidade }) {
   ))
 }
 
+/** Linha da tabela: `{ idPedido, statusPedido, nomeUsuario, itens, formaPagamento, valorTotal, pontosGerados }`. */
 function LinhaPedido({ pedido }) {
-  const cancelado = pedido.status === STATUS.CANCELADO
+  const cancelado = pedido.statusPedido === STATUS.CANCELADO
   const itens = formatarItens(pedido.itens)
+  const temCliente = Boolean(pedido.nomeUsuario)
   return (
     <tr className={`${styles.linha} ${cancelado ? styles.cancelado : ''}`}>
       <td data-rotulo="# Pedido" className={`${styles.codigo} tabular`}>
-        {formatarCodigo(pedido.id)}
+        {formatarCodigo(pedido.idPedido)}
       </td>
-      <td data-rotulo="Cliente" className={styles.cliente}>
-        {pedido.cliente?.nome ?? '—'}
+      <td data-rotulo="Cliente" className={`${styles.cliente} ${temCliente ? '' : styles.semCadastro}`}>
+        {temCliente ? pedido.nomeUsuario : ROTULO_SEM_CADASTRO}
       </td>
       <td data-rotulo="Itens" className={styles.itens} title={itens}>
         <span className={styles.reticencias}>{itens || '—'}</span>
@@ -56,7 +58,13 @@ function LinhaPedido({ pedido }) {
         )}
       </td>
       <td data-rotulo="Pontos ganhos">
-        {cancelado ? <Chip tom="cancelado">Cancelado</Chip> : <Chip tom="pontos">{formatarPontos(pedido.pontosGanhos)}</Chip>}
+        {cancelado ? (
+          <Chip tom="cancelado">Cancelado</Chip>
+        ) : temCliente ? (
+          <Chip tom="pontos">{formatarPontos(pedido.pontosGerados)}</Chip>
+        ) : (
+          <span className={styles.semPontos} aria-label="Sem pontos (pedido sem cadastro)">—</span>
+        )}
       </td>
     </tr>
   )
@@ -107,7 +115,7 @@ export default function PedidosDashboardTable({ bloco, pagina, tamanho, onIrPara
               {carregando ? (
                 <LinhasEsqueleto quantidade={tamanho} />
               ) : (
-                pedidos.map((p) => <LinhaPedido key={p.id} pedido={p} />)
+                pedidos.map((p) => <LinhaPedido key={p.idPedido} pedido={p} />)
               )}
             </tbody>
           </table>
