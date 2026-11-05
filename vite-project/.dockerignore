@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+.env
+*.local
+db.json
+.idea
+.vscode
+Dockerfile
+.dockerignore
