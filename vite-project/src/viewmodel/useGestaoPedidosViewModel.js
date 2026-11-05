@@ -63,7 +63,10 @@ export function useGestaoPedidosViewModel() {
     await carregarTodas()
   }, [carregarTodas, reiniciar])
 
-  /** Tira o pedido da coluna de origem e o coloca no fim da fila da coluna de destino. */
+  /**
+   * Tira o pedido da coluna de origem e o coloca na de destino: no fim da fila nas colunas de trabalho,
+   * no topo da de concluídos (que a API devolve com os mais recentes primeiro).
+   */
   const mover = useCallback(
     (id, atualizado) => {
       const definidores = { novos: dNovos, emPreparo: dPreparo, prontos: dProntos, concluidos: dConcluidos }
@@ -71,7 +74,8 @@ export function useGestaoPedidosViewModel() {
       for (const [chave, definir] of Object.entries(definidores)) {
         definir((lista) => {
           const semPedido = (lista ?? []).filter((p) => p.idPedido !== id)
-          return chave === destino ? [...semPedido, atualizado] : semPedido
+          if (chave !== destino) return semPedido
+          return chave === 'concluidos' ? [atualizado, ...semPedido] : [...semPedido, atualizado]
         })
       }
     },

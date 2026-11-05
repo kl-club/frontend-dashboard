@@ -66,6 +66,7 @@ As rotas, os códigos de erro e as regras completas estão em `../backend/README
 - **Sessão:** a API não gera token. A sessão (`sessionStorage`, chave `klclub.sessao`) guarda só o funcionário, e a `RotaProtegida` bloqueia as telas no front. Não há controle por `nivel`: todos veem tudo.
 - **Pedido `PENDENTE`** (dinheiro, pago no balcão): o cartão fica com fundo e borda azul-petróleo (`--pagar-balcao` e `--pagar-balcao-bg`), para se distinguir dos já pagos, e mostra "Pagar no balcão" e o botão "Receber e aceitar", que pede confirmação e chama o mesmo `avancar`. Depois de recebido, o pedido está pago e volta à cor da coluna.
 - **Pedido sem cliente:** o nome aparece como "Sem cadastro", em tom apagado, sem chip de pontos (na tabela da Visão Geral, "—").
+- **Ordem das colunas:** Novos, Em Preparo e Prontos são filas (mais antigos no topo); Concluídos mostra os mais recentes no topo, na ordem que a API devolve. Ao avançar, `mover` põe o pedido no fim da coluna de destino, exceto em Concluídos, onde ele entra no topo.
 - **Recusar** pede confirmação e chama `cancelar`; o texto não fala em estorno.
 - **Conflito:** `409` ou `404` numa ação mostra "Este pedido já foi atualizado por outra pessoa" e recarrega as quatro listas. Dois "avançar" simultâneos movem o pedido duas etapas sem erro (comportamento aceito na spec).
 - **Atualização automática** a cada 30 s, pausada com a aba oculta e durante uma ação.
